@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="FuzzyCognitiveModel.Views.GraphControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fuzzyCognitiveMap="clr-namespace:Core.FuzzyCognitiveMap;assembly=Core"
+             xmlns:controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
+             xmlns:controls1="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
+             xmlns:fuzzyCognitiveModel="clr-namespace:FuzzyCognitiveModel"
+             d:DataContext="{d:DesignInstance fuzzyCognitiveMap:FuzzyCognitiveMap, IsDesignTimeCreatable=True}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400"
+             x:Name="root">
+
+    <UserControl.Resources>
+        <fuzzyCognitiveModel:EdgeColorConverter x:Key="edgeToEdgeColorConverter"/>
+        <Style TargetType="{x:Type controls1:EdgeControl}">
+            <Style.Setters>
+                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self},Path=Edge.EdgeColor,Converter={StaticResource edgeToEdgeColorConverter}}"/>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
+
+    <controls:ZoomControl>
+        <controls1:GraphLayout x:Name="graphLayout"
+                               Graph="{Binding ElementName=root,Path=GraphToVisualize}"
+                               LayoutAlgorithmType="FR" OverlapRemovalAlgorithmType="FSA"
+                               HighlightAlgorithmType="Simple" />
+    </controls:ZoomControl>
+</UserControl>
+
+
+
+
+
+
+
