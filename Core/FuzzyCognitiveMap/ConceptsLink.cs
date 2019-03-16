@@ -5,6 +5,7 @@
     /// <summary>
     /// Связь между концептами.
     /// </summary>
+    /// <remarks> Дуга в графе. </remarks>
     public class ConceptsLink
     {
         /// <summary>

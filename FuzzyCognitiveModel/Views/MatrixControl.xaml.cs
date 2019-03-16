@@ -1,28 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using FuzzyCognitiveModel.ViewModels;
 
 namespace FuzzyCognitiveModel.Views
 {
     /// <summary>
     /// Логика взаимодействия для FuzzyCognitiveMatrixUser.xaml
     /// </summary>
-    public partial class FuzzyCognitiveMatrixUser : UserControl
+    public partial class MatrixControl : UserControl
     {
-        public FuzzyCognitiveMatrixUser()
+        public MatrixControl()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+        }
+
+        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            this.Matrix.ItemsSource = (this.DataContext as FuzzyCognitiveMapViewModel).FuzzyCognitiveMap
+                .FuzzyCognitiveMatrixDataTable.DefaultView;
+            this.Matrix.Items.Refresh();
+        }
+
+        private void MatrixControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var context = this.DataContext as FuzzyCognitiveMapViewModel;
+            context.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
         }
     }
 }

@@ -66,7 +66,7 @@
 
         <ScrollViewer Grid.Row="1">
             <ItemsControl x:Name="Concepts"
-                          ItemsSource="{Binding Concepts, Mode=OneWay}" ItemTemplate="{StaticResource ConceptTemplate}">
+                          ItemsSource="{Binding FuzzyCognitiveMap.Concepts, Mode=OneWay}" ItemTemplate="{StaticResource ConceptTemplate}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Disabled" />

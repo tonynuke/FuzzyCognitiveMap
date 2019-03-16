@@ -1,9 +1,8 @@
-﻿using System.Linq;
+﻿using System.Data;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
-using Core.FuzzyCognitiveMap;
 using FuzzyCognitiveModel.ViewModels;
-using GraphSharp.Controls;
-using QuickGraph;
 
 namespace FuzzyCognitiveModel
 {
@@ -25,14 +24,13 @@ namespace FuzzyCognitiveModel
             this.FuzzyCognitiveViewModel.AddConceptCommand.Execute(null);
             this.FuzzyCognitiveViewModel.AddConceptCommand.Execute(null);
 
-            this.FuzzyCognitiveViewModel.fuzzyCognitiveMap.SetLink(this.FuzzyCognitiveViewModel.Concepts.First(), this.FuzzyCognitiveViewModel.Concepts.Last(), 10);
+            this.FuzzyCognitiveViewModel.FuzzyCognitiveMap
+                .SetLink(this.FuzzyCognitiveViewModel.FuzzyCognitiveMap.Concepts.First(), 
+                    this.FuzzyCognitiveViewModel.FuzzyCognitiveMap.Concepts.Last(), 10);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var m = this.FuzzyCognitiveViewModel.FuzzyCognitiveMatrix;
-            this.FCM.Matrix.Items.Refresh();
-            //this.GraphControl.CreateGraphToVisualize();
         }
     }
 }

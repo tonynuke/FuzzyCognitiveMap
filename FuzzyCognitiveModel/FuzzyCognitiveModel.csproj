@@ -86,9 +86,6 @@
     <Compile Include="Views\MatrixControl.xaml.cs">
       <DependentUpon>MatrixControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GraphControl.xaml.cs">
-      <DependentUpon>GraphControl.xaml</DependentUpon>
-    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,10 +103,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MatrixControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\GraphControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

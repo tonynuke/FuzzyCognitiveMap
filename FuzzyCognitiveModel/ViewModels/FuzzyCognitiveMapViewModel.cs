@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Data;
 using System.Windows.Input;
 using Core.FuzzyCognitiveMap;
 
@@ -6,11 +6,13 @@ namespace FuzzyCognitiveModel.ViewModels
 {
     public class FuzzyCognitiveMapViewModel
     {
-        public readonly FuzzyCognitiveMap fuzzyCognitiveMap = new FuzzyCognitiveMap();
+        public FuzzyCognitiveMap FuzzyCognitiveMap { get; set; } = new FuzzyCognitiveMap();
 
-        public ObservableCollection<Concept> Concepts => this.fuzzyCognitiveMap.Concepts;
-
-        public MatrixViewModel FuzzyCognitiveMatrix => new MatrixViewModel(this.fuzzyCognitiveMap.FuzzyCognitiveMatrix);
+        public DataView DataView
+        {
+           // set { this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable = value.Table; }
+            get => this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable.DefaultView;
+        }
 
         private ICommand addConceptCommand;
 
@@ -27,8 +29,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <param name="obj"> Параметр. </param>
         private void AddConcept(object obj)
         {
-            this.fuzzyCognitiveMap.AddConcept();
-            this.FuzzyCognitiveMatrix.Redraw();
+            this.FuzzyCognitiveMap.AddConcept();
         }
 
         private ICommand deleteConceptCommand;
@@ -46,7 +47,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <param name="obj"> Параметр. </param>
         private void DeleteConcept(object obj)
         {
-            this.fuzzyCognitiveMap.DeleteConcept(obj as Concept);
+            this.FuzzyCognitiveMap.DeleteConcept(obj as Concept);
         }
     }
 }

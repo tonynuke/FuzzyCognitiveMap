@@ -8,38 +8,17 @@ namespace FuzzyCognitiveModel.ViewModels
     /// </summary>
     public class MatrixViewModel
     {
-        double[,] dataArray;
+        public readonly FuzzyCognitiveMap FuzzyCognitiveMap;
 
-        public MatrixViewModel(double[,] dataArray)
+        public MatrixViewModel(FuzzyCognitiveMap fuzzyCognitiveMap)
         {
-            this.dataArray = dataArray;
-            this.Redraw();
+            this.FuzzyCognitiveMap = fuzzyCognitiveMap;
         }
 
-        public void Redraw()
+        public DataView DataView
         {
-            var array = this.dataArray;
-            var rows = array.GetLength(0);
-            var columns = array.GetLength(1);
-            var t = new DataTable();
-
-            for (var c = 0; c < columns; c++)
-            {
-                t.Columns.Add(new DataColumn(c.ToString()));
-            }
-
-            for (var r = 0; r < rows; r++)
-            {
-                var newRow = t.NewRow();
-                for (var c = 0; c < columns; c++)
-                {
-                    newRow[c] = array[r, c];
-                }
-                t.Rows.Add(newRow);
-            }
-            this.DataView = t.DefaultView;
+            //set { this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable = value.Table; }
+            get => this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable.DefaultView;
         }
-
-        public DataView DataView { get; set; }
     }
 }

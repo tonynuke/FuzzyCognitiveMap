@@ -3,6 +3,7 @@
     /// <summary>
     /// Концепт.
     /// </summary>
+    /// <remarks> Узел в графе. </remarks>
     public class Concept
     {
         /// <summary>

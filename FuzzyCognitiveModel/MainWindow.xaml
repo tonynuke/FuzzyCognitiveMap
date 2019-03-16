@@ -12,7 +12,6 @@
             <Button Content="Button" Width="75" Click="Button_Click"/>
         </Menu>
         <views:ConceptsControl DataContext="{Binding FuzzyCognitiveViewModel}" Margin="10,45,396,20"/>
-        <views:FuzzyCognitiveMatrixUser x:Name="FCM" DataContext="{Binding FuzzyCognitiveViewModel}" Margin="0,45,10,100" HorizontalAlignment="Right" Width="329"/>
-        <!--<views:GraphControl x:Name="GraphControl" DataContext="{Binding FuzzyCognitiveViewModel}" Margin="0,45,10,20" HorizontalAlignment="Right" Width="381"/>-->
-    </Grid>
+        <views:MatrixControl x:Name="MatrixControl" DataContext="{Binding FuzzyCognitiveViewModel}" Margin="0,45,10,100" HorizontalAlignment="Right" Width="329"/>
+     </Grid>
 </Window>
