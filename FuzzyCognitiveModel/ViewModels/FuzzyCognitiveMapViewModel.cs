@@ -10,7 +10,7 @@ namespace FuzzyCognitiveModel.ViewModels
 
         public DataView DataView
         {
-           // set { this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable = value.Table; }
+            set { this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable = value.Table; }
             get => this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable.DefaultView;
         }
 

@@ -9,5 +9,5 @@
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <DataGrid Name="Matrix" ItemsSource="{Binding DataView}"/>
+    <DataGrid Name="Matrix" ItemsSource="{Binding DataView}" CellEditEnding="Matrix_OnCellEditEnding"/>
 </UserControl>

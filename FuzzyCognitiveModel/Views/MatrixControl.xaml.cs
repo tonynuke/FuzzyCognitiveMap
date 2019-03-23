@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using FuzzyCognitiveModel.ViewModels;
@@ -11,6 +11,8 @@ namespace FuzzyCognitiveModel.Views
     /// </summary>
     public partial class MatrixControl : UserControl
     {
+        private FuzzyCognitiveMapViewModel context;
+
         public MatrixControl()
         {
             this.InitializeComponent();
@@ -18,15 +20,18 @@ namespace FuzzyCognitiveModel.Views
 
         private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            this.Matrix.ItemsSource = (this.DataContext as FuzzyCognitiveMapViewModel).FuzzyCognitiveMap
-                .FuzzyCognitiveMatrixDataTable.DefaultView;
-            this.Matrix.Items.Refresh();
+            this.Matrix.ItemsSource = this.context.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable.DefaultView;
         }
 
         private void MatrixControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var context = this.DataContext as FuzzyCognitiveMapViewModel;
-            context.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+            this.context = this.DataContext as FuzzyCognitiveMapViewModel;
+            this.context.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void Matrix_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            this.context.FuzzyCognitiveMap.SetLinkViaMatrix(1, 1, 1);
         }
     }
 }

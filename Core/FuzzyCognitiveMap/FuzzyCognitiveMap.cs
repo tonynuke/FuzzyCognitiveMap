@@ -60,16 +60,24 @@
                 return dataTable;
             }
 
-            //set
-            //{
-            //    for (var row = 0; row < value.Rows.Count; row++)
-            //    {
-            //        for (var column = 0; column < value.Columns.Count; row++)
-            //        {
-            //            this.fuzzyCognitiveMatrix[row, column] = (double)value.Rows[row][column];
-            //        }
-            //    }
-            //}
+            set
+            {
+                for (var row = 0; row < value.Rows.Count; row++)
+                {
+                    for (var column = 0; column < value.Columns.Count; row++)
+                    {
+                        this.fuzzyCognitiveMatrix[row, column] = (double)value.Rows[row][column];
+                    }
+                }
+            }
+        }
+
+        public void SetLinkViaMatrix(int row, int column, double value)
+        {
+            this.fuzzyCognitiveMatrix = this.FuzzyCognitiveMatrix;
+            this.fuzzyCognitiveMatrix[row, column] = value;
+            this.UpdateConceptLinks();
+            this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
         }
 
         /// <summary>
@@ -78,12 +86,6 @@
         public double[,] FuzzyCognitiveMatrix
         {
             get => this.GetFuzzyCognitiveMatrix();
-            set
-            {
-                this.fuzzyCognitiveMatrix = value;
-                this.UpdateConceptLinks();
-                this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
-            }
         }
 
         /// <summary>
@@ -192,7 +194,17 @@
         public void DeleteConcept(Concept concept)
         {
             this.Concepts.Remove(concept);
+            this.RemoveConveptLinks(concept);
             this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
+        }
+
+        private void RemoveConveptLinks(Concept concept)
+        {
+            var linksToRemove = this.conceptsLinks.Where(link => link.From == concept || link.To == concept).ToList();
+            foreach (var link in linksToRemove)
+            {
+                this.conceptsLinks.Remove(link);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

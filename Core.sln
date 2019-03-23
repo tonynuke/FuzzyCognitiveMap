@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B47785E7-8449-4178-81BD-E06B5E69FF05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{B47785E7-8449-4178-81BD-E06B5E69FF05}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyCognitiveModel", "FuzzyCognitiveModel\FuzzyCognitiveModel.csproj", "{08A1068E-BE6F-4C39-8346-B6F77821264B}"
 EndProject
