@@ -7,6 +7,8 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Annotations;
+    using MathNet.Numerics.LinearAlgebra;
+    using MathNet.Numerics.LinearAlgebra.Double;
 
     /// <summary>
     /// Нечетная когнитивная карта.
@@ -19,39 +21,42 @@
         private const string DefaultName = "Безымянный";
 
         /// <summary>
-        /// НКМ.
-        /// </summary>
-        private double[,] fuzzyCognitiveMatrix = new double[1, 1];
-
-        /// <summary>
-        /// Связи между концептами.
-        /// </summary>
-        private readonly ObservableCollection<ConceptsLink> conceptsLinks = new ObservableCollection<ConceptsLink>();
-
-        /// <summary>
         /// Концепты.
         /// </summary>
         public ObservableCollection<Concept> Concepts { get; set; } = new ObservableCollection<Concept>();
 
+        /// <summary>
+        /// Связи между концептами.
+        /// </summary>
+        private readonly List<ConceptsLink> conceptsLinks = new List<ConceptsLink>();
+
+        /// <summary>
+        /// Нечеткая когнитивная матрица (НКМ).
+        /// </summary>
+        private Matrix<double> fuzzyCognitiveMatrix;
+
+        /// <summary>
+        /// Таблица для отображения НКМ.
+        /// </summary>
         public DataTable FuzzyCognitiveMatrixDataTable
         {
             get
             {
-                var rows = this.FuzzyCognitiveMatrix.GetLength(0);
-                var columns = this.FuzzyCognitiveMatrix.GetLength(1);
+                var rowsCount = this.fuzzyCognitiveMatrix?.RowCount;
+                var columnsCount = this.fuzzyCognitiveMatrix?.ColumnCount;
                 var dataTable = new DataTable();
 
-                for (var c = 0; c < columns; c++)
+                for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
                 {
-                    dataTable.Columns.Add(new DataColumn(c.ToString()));
+                    dataTable.Columns.Add(new DataColumn(columnIndex.ToString()));
                 }
 
-                for (var r = 0; r < rows; r++)
+                for (var rowIndex = 0; rowIndex < rowsCount; rowIndex++)
                 {
                     var newRow = dataTable.NewRow();
-                    for (var c = 0; c < columns; c++)
+                    for (var c = 0; c < columnsCount; c++)
                     {
-                        newRow[c] = this.FuzzyCognitiveMatrix[r, c];
+                        newRow[c] = this.fuzzyCognitiveMatrix[rowIndex, c];
                     }
 
                     dataTable.Rows.Add(newRow);
@@ -72,75 +77,51 @@
             }
         }
 
+        /// <summary>
+        /// Установить значение связи через НКМ.
+        /// </summary>
+        /// <param name="row"> Строка. </param>
+        /// <param name="column"> Столбец. </param>
+        /// <param name="value"> Значение связи. </param>
         public void SetLinkViaMatrix(int row, int column, double value)
         {
-            this.fuzzyCognitiveMatrix = this.FuzzyCognitiveMatrix;
+            this.fuzzyCognitiveMatrix = DenseMatrix.OfArray(this.FuzzyCognitiveMatrix);
             this.fuzzyCognitiveMatrix[row, column] = value;
-            this.UpdateConceptLinks();
+
+            Concept from = this.Concepts[row];
+            Concept to = this.Concepts[column];
+            this.SetLinkBetweenConcepts(from, to, value);
+
             this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
         }
 
         /// <summary>
         /// НКМ.
         /// </summary>
+        [CanBeNull]
         public double[,] FuzzyCognitiveMatrix
         {
-            get => this.GetFuzzyCognitiveMatrix();
+            get => this.fuzzyCognitiveMatrix?.ToArray();
         }
 
         /// <summary>
-        /// Обновить связи между концептами.
+        /// Событие изменения свойства.
         /// </summary>
-        private void UpdateConceptLinks()
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            var length = this.Concepts.Count;
-            var dictionary = new Dictionary<int, Concept>();
-            for (int i = 0; i < length; i++)
-            {
-                dictionary.Add(i, this.Concepts[i]);
-            }
-
-            for (int i = 0; i < length; i++)
-            {
-                for (int j = 0; j < length; j++)
-                {
-                    var value = this.fuzzyCognitiveMatrix[i, j];
-                    Concept from = dictionary[i];
-                    Concept to = dictionary[j];
-
-                    this.SetLink(from, to, value);
-                }
-            }
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
-        /// Получить НКМ.
+        /// Установить связь между концептами.
         /// </summary>
-        /// <returns> НКМ. </returns>
-        private double[,] GetFuzzyCognitiveMatrix()
-        {
-            var length = this.Concepts.Count;
-            var matrix = new double[length, length];
-
-            var dictionary = new Dictionary<Concept, int>();
-
-            for (int i = 0; i < length; i++)
-            {
-                dictionary.Add(this.Concepts[i], i);
-            }
-
-            foreach (var link in this.conceptsLinks)
-            {
-                var i = dictionary[link.From];
-                var j = dictionary[link.To];
-
-                matrix[i, j] = link.Value;
-            }
-
-            return matrix;
-        }
-
-        public void SetLink(Concept from, Concept to, double value)
+        /// <param name="from"> От. </param>
+        /// <param name="to"> К. </param>
+        /// <param name="value"> Значение связи. </param>
+        public void SetLinkBetweenConcepts(Concept from, Concept to, double value)
         {
             ConceptsLink existingLink = null;
 
@@ -178,8 +159,16 @@
 
             var newLink = new ConceptsLink(from, to, insertingValue);
             this.conceptsLinks.Add(newLink);
+
+            var rowChangedIndex = this.Concepts.IndexOf(from);
+            var columnChangedIndex = this.Concepts.IndexOf(to);
+
+            this.fuzzyCognitiveMatrix[rowChangedIndex, columnChangedIndex] = value;
         }
 
+        /// <summary>
+        /// Добавить новый концепт.
+        /// </summary>
         public void AddConcept()
         {
             var defaultName = $"{DefaultName}{this.Concepts.Count}";
@@ -188,16 +177,51 @@
                 Name = defaultName
             };
             this.Concepts.Add(newConcept);
+
+            if (this.Concepts.Count == 1)
+            {
+                this.fuzzyCognitiveMatrix = new DenseMatrix(1);
+            }
+            else if (this.Concepts.Count > 1)
+            {
+                var insertIndex = this.Concepts.Count - 1;
+                var insertingRow = new DenseVector(this.Concepts.Count - 1);
+                var insertingColumn = new DenseVector(this.Concepts.Count);
+                this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertRow(insertIndex, insertingRow);
+                this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertColumn(insertIndex, insertingColumn);
+            }
+
             this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
         }
 
+        /// <summary>
+        /// Удалить концепт.
+        /// </summary>
+        /// <param name="concept"> Концепт. </param>
         public void DeleteConcept(Concept concept)
         {
+            var removeIndex = this.Concepts.IndexOf(concept);
+
+            if (this.Concepts.Count > 1)
+            {
+                this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.RemoveColumn(removeIndex);
+                this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.RemoveRow(removeIndex);
+            }
+            else
+            {
+                this.fuzzyCognitiveMatrix = null;
+            }
+
             this.Concepts.Remove(concept);
             this.RemoveConveptLinks(concept);
+
             this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
         }
 
+        /// <summary>
+        /// Удалить связи в которых участвует концепт.
+        /// </summary>
+        /// <param name="concept"> Концепт. </param>
         private void RemoveConveptLinks(Concept concept)
         {
             var linksToRemove = this.conceptsLinks.Where(link => link.From == concept || link.To == concept).ToList();
@@ -205,14 +229,6 @@
             {
                 this.conceptsLinks.Remove(link);
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

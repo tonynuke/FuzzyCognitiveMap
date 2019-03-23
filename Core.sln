@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FuzzyCognitiveModel", "FuzzyCognitiveModel\FuzzyCognitiveModel.csproj", "{08A1068E-BE6F-4C39-8346-B6F77821264B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Tests", "Core.Tests\Core.Tests.csproj", "{AE3868B7-6B25-4CCA-8192-BE62B0AF9B3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{08A1068E-BE6F-4C39-8346-B6F77821264B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08A1068E-BE6F-4C39-8346-B6F77821264B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08A1068E-BE6F-4C39-8346-B6F77821264B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE3868B7-6B25-4CCA-8192-BE62B0AF9B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE3868B7-6B25-4CCA-8192-BE62B0AF9B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE3868B7-6B25-4CCA-8192-BE62B0AF9B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE3868B7-6B25-4CCA-8192-BE62B0AF9B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
