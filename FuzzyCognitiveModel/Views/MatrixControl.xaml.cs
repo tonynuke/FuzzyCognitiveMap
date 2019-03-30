@@ -45,12 +45,17 @@ namespace FuzzyCognitiveModel.Views
 
         private void Matrix_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            // HACK:
+            // HACK: чтобы не было exception
             if (e.Key == Key.Return)
             {
                 e.Handled = true;
                 this.Matrix.CommitEdit();
             }
+        }
+
+        private void MatrixControl_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.context.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
         }
     }
 }

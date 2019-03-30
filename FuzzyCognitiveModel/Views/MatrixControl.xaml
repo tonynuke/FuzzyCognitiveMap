@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:FuzzyCognitiveModel.ViewModels"
+             xmlns:views="clr-namespace:FuzzyCognitiveModel.Views"
              mc:Ignorable="d"
              Loaded="MatrixControl_OnLoaded"
+             Unloaded="MatrixControl_OnUnloaded"
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <DataGrid Name="Matrix" ItemsSource="{Binding DataView}" PreviewKeyDown="Matrix_OnPreviewKeyDown" CellEditEnding="Matrix_OnCellEditEnding"/>
+    <DataGrid Name="Matrix" ItemsSource="{Binding DataView}" PreviewKeyDown="Matrix_OnPreviewKeyDown" CellEditEnding="Matrix_OnCellEditEnding">
+    </DataGrid>
 </UserControl>

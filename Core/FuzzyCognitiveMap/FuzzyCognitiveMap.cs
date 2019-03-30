@@ -6,7 +6,6 @@
     using System.Data;
     using System.Linq;
     using System.Runtime.CompilerServices;
-    using Annotations;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
 
@@ -51,6 +50,28 @@
             return this.DynamicModeller.StartModelling(vector, this.fuzzyCognitiveMatrix, steps);
         }
 
+        public List<List<double>> Matrix
+        {
+            get
+            {
+                List<List<double>> matrix = new List<List<double>>();
+                var rowsCount = this.fuzzyCognitiveMatrix?.RowCount;
+                var columnsCount = this.fuzzyCognitiveMatrix?.ColumnCount;
+
+                for (int row = 0; row < rowsCount; row++)
+                {
+                    matrix.Add(new List<double>());
+
+                    for (int column = 0; column < columnsCount; column++)
+                    {
+                        matrix[row].Add(this.fuzzyCognitiveMatrix[row, column]);
+                    }
+                }
+
+                return matrix;
+            }
+        }
+
         /// <summary>
         /// Таблица для отображения НКМ.
         /// </summary>
@@ -72,9 +93,9 @@
                     var newRow = dataTable.NewRow();
                     dataTable.Rows.Add(newRow);
 
-                    for (var c = 0; c < columnsCount; c++)
+                    for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
                     {
-                        newRow[c] = this.fuzzyCognitiveMatrix[rowIndex, c];
+                        newRow[columnIndex] = this.fuzzyCognitiveMatrix[rowIndex, columnIndex];
                     }
                 }
 
@@ -166,7 +187,7 @@
             if (existingLink != null)
             {
                 existingLink.Value = value;
-                this.UpdateCognitiveMatrix(from, to, value);
+                this.UpdateCognitiveMatrix(from, to, insertingValue);
                 return;
             }
 
