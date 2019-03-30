@@ -6,54 +6,53 @@
 
     public class StaticModeller
     {
+        public void Do(Matrix<double> matrix)
+        {
+            var r = this.PosiriveLinksMatrix(matrix);
+            var pv = this.PositivePairMatrix(r);
+            var nv = this.NegativePairMatrix(r);
+            var cons = this.ConsonanceMatrix(pv, nv);
+            var diss = this.DisonanceMatrix(cons);
+            var p = this.InfluenceMatrix(pv, nv);
+        }
+
         /// <summary>
         /// Рассчитать транзитивно замкнутую матрицу.
         /// </summary>
         /// <param name="matrix"> Матрица. </param>
         /// <returns> Транзитивно замкнутая матрица. </returns>
-        public Matrix TransitiveClousure(Matrix<double> matrix)
+        public Matrix<double> TransitiveClousure(Matrix<double> matrix)
         {
             if (matrix.ColumnCount != matrix.RowCount)
             {
                 return null;
             }
 
-            int rowsCount = matrix.RowCount;
-            Matrix result = new DenseMatrix(rowsCount, rowsCount);
-            //for (int index1 = 1; index1 <= rowsCount; ++index1)
-            //{
-            //    Matrix matrix = new Matrix(M1);
-            //    for (int index2 = 1; index2 <= rowsCount; ++index2)
-            //    {
-            //        for (int index3 = 1; index3 <= rowsCount; ++index3)
-            //            M1[index2, index3] = Value.S_Norm(matrix[index2, index3], Value.T_Norm(matrix[index2, index1], matrix[index1, index3]));
-            //    }
-            //}
-            return result;
-        }
+            int matrixSize = matrix.RowCount;
 
-        /// <summary>
-        /// Рассчитать положительную транзитивно замкнутую матрицу.
-        /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <returns> Положительная транзитивно замкнутая матрица. </returns>
-        public Matrix PositiveTransitiveClousure(Matrix<double> matrix)
-        {
-            if (matrix.RowCount != matrix.ColumnCount)
+            Matrix result = new DenseMatrix(matrixSize, matrixSize);
+            int i, j, k;
+
+            for (i = 0; i < matrixSize; i++)
             {
-                return null;
+                for (j = 0; j < matrixSize; j++)
+                {
+                    result[i, j] = matrix[i, j];
+                }
             }
 
-            int matrixSize = matrix.RowCount / 2;
-            Matrix result = new DenseMatrix(matrixSize, matrixSize);
-
-            for (int index1 = 0; index1 < matrixSize; index1++)
+            for (k = 0; k < matrixSize; k++)
             {
-                int index2 = index1 * 2;
-                for (int index3 = 0; index3 < matrixSize; index3++)
+                for (i = 0; i < matrixSize; i++)
                 {
-                    int index4 = index3 * 2;
-                    result[index1, index3] = Math.Max(matrix[index2 - 1, index4 - 1], matrix[index2, index4]);
+                    for (j = 0; j < matrixSize; j++)
+                    {
+                        result[i, j] = (result[i, j] != 0) ||
+                                       ((result[i, k] != 0) &&
+                                        (result[k, j] != 0))
+                            ? 1
+                            : 0;
+                    }
                 }
             }
 
@@ -61,16 +60,11 @@
         }
 
         /// <summary>
-        /// Рассчитать отрицательную транзитивно замкнутую матрицу.
+        /// Вычислить матрицу положительных связей.
         /// </summary>
-        /// <param name="matrix"> Матрица. </param>
-        /// <returns> Отрицательная транзитивно замкнутая матрица. </returns>
-        public Matrix NegativeTransitiveClousure(Matrix<double> matrix)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Matrix DoubleMatrix(Matrix<double> matrix)
+        /// <param name="matrix"> Матрица влияний. </param>
+        /// <returns> Матрица положительных связей. </returns>
+        public Matrix<double> PosiriveLinksMatrix(Matrix<double> matrix)
         {
             if (matrix.RowCount != matrix.ColumnCount)
             {
@@ -80,38 +74,180 @@
             int matrixSize = matrix.RowCount * 2;
             Matrix result = new DenseMatrix(matrixSize, matrixSize);
 
-            for (int index1 = 0; index1 < matrix.RowCount; index1++)
+            for (int i = 0; i < matrix.RowCount; i++)
             {
-                int index2 = 1;
-                if (index1 >= 1)
-                {
-                    index2 = (index1 * 2) - 1;
-                }
+                int i2 = this.CalculateIndex(i);
 
-                for (int index3 = 0; index3 < matrix.RowCount; index3++)
+                for (int j = 0; j < matrix.RowCount; j++)
                 {
-                    int index4 = 1;
-                    if (index3 >= 1)
-                    {
-                        index4 = (index3 * 2) - 1;
-                    }
+                    int j2 = this.CalculateIndex(j);
 
-                    double value = matrix[index1, index3];
+                    double value = matrix[i, j];
 
                     if (value >= 0)
                     {
-                        matrix[index2 - 1, index4 - 1] = value;
-                        matrix[index2, index4] = value;
+                        result[i2 - 1, j2 - 1] = value;
+                        result[i2, j2] = value;
                     }
                     else
                     {
-                        matrix[index2 - 1, index4] = value;
-                        matrix[index2, index4 - 1] = value;
+                        result[i2 - 1, j2] = -value;
+                        result[i2, j2 - 1] = -value;
                     }
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Вычислить матрицу положительных пар.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <returns> Матрица положительных пар </returns>
+        public Matrix<double> PositivePairMatrix(Matrix<double> matrix)
+        {
+            if (matrix.RowCount != matrix.ColumnCount)
+            {
+                return null;
+            }
+
+            int matrixSize = matrix.RowCount / 2;
+            Matrix result = new DenseMatrix(matrixSize, matrixSize);
+
+            for (int i = 0; i < matrixSize; i++)
+            {
+                int i2 = this.CalculateIndex(i);
+                for (int j = 0; j < matrixSize; j++)
+                {
+                    int j2 = this.CalculateIndex(j);
+                    result[i, j] = Math.Max(matrix[i2 - 1, j2 - 1], matrix[i2, j2]);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Вычислить матрицу отрицательных пар.
+        /// </summary>
+        /// <param name="matrix"> Матрица. </param>
+        /// <returns> Матрица отрицательных пар </returns>
+        public Matrix<double> NegativePairMatrix(Matrix<double> matrix)
+        {
+            if (matrix.RowCount != matrix.ColumnCount)
+            {
+                return null;
+            }
+
+            int matrixSize = matrix.RowCount / 2;
+            Matrix result = new DenseMatrix(matrixSize, matrixSize);
+
+            for (int i = 0; i < matrixSize; i++)
+            {
+                int i2 = this.CalculateIndex(i);
+                for (int j = 0; j < matrixSize; j++)
+                {
+                    int j2 = this.CalculateIndex(j);
+                    result[i, j] = Math.Max(matrix[i2 - 1, j2], matrix[i2, j2 - 1]);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Вычислить консонанс.
+        /// </summary>
+        /// <param name="positivePairs"> Матрица положительных пар. </param>
+        /// <param name="negativePairs"> Матрица отрицательных пар. </param>
+        /// <returns> Матрица отрицательных пар </returns>
+        public Matrix<double> ConsonanceMatrix(
+            Matrix<double> positivePairs,
+            Matrix<double> negativePairs)
+        {
+            var matrixSize = positivePairs.ColumnCount;
+            Matrix result = new DenseMatrix(matrixSize, matrixSize);
+
+            for (int i = 0; i < matrixSize; i++)
+            {
+                for (int j = 0; j < matrixSize; i++)
+                {
+                    var value = Math.Abs(positivePairs[i, j] + negativePairs[i, j]) /
+                                (Math.Abs(positivePairs[i, j]) + Math.Abs(negativePairs[i, j]));
+                    result[i, j] = value;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Вычислить дисонанс.
+        /// </summary>
+        /// <param name="consonanceMatrix"> Матрица консонанса. </param>
+        /// <returns> Матрица отрицательных пар </returns>
+        public Matrix<double> DisonanceMatrix(Matrix<double> consonanceMatrix)
+        {
+            var matrixSize = consonanceMatrix.ColumnCount;
+            Matrix result = new DenseMatrix(matrixSize, matrixSize);
+
+            for (int i = 0; i < matrixSize; i++)
+            {
+                for (int j = 0; j < matrixSize; i++)
+                {
+                    result[i, j] = 1 - consonanceMatrix[i, j];
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Вычислить влияние.
+        /// </summary>
+        /// <param name="positivePairs"> Матрица положительных пар. </param>
+        /// <param name="negativePairs"> Матрица отрицательных пар. </param>
+        /// <returns> Матрица влияния. </returns>
+        public Matrix<double> InfluenceMatrix(
+            Matrix<double> positivePairs,
+            Matrix<double> negativePairs)
+        {
+            var matrixSize = positivePairs.ColumnCount;
+            Matrix result = new DenseMatrix(matrixSize, matrixSize);
+
+            for (int i = 0; i < matrixSize; i++)
+            {
+                for (int j = 0; j < matrixSize; i++)
+                {
+                    if (i == j)
+                    {
+                        continue;
+                    }
+
+                    var sum = positivePairs[i, j] + negativePairs[i, j];
+                    var max = Math.Max(Math.Abs(positivePairs[i, j]), Math.Abs(negativePairs[i, j]));
+                    result[i, j] = Math.Sign(sum) * max;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Вычислить индекс с учетом поправки.
+        /// </summary>
+        /// <param name="sourceIndex"> Исходный индекс. </param>
+        /// <returns> Индекс с учетом поправки. </returns>
+        private int CalculateIndex(int sourceIndex)
+        {
+            var newIndex = 1;
+            if (sourceIndex >= 1)
+            {
+                newIndex = (sourceIndex * 2) - 1;
+            }
+
+            return newIndex;
         }
     }
 }
