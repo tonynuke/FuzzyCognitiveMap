@@ -49,5 +49,23 @@ namespace FuzzyCognitiveModel.ViewModels
         {
             this.FuzzyCognitiveMap.DeleteConcept(obj as Concept);
         }
+
+        private ICommand modellCommand;
+
+        /// <summary>
+        /// Команда моделирования.
+        /// </summary>
+        public ICommand ModellCommand =>
+            this.modellCommand ?? (
+                this.modellCommand = new DelegateCommand(this.Model));
+
+        /// <summary>
+        /// Удалить концепт.
+        /// </summary>
+        /// <param name="obj"> Параметр. </param>
+        private void Model(object obj)
+        {
+            this.FuzzyCognitiveMap.Model(10);
+        }
     }
 }

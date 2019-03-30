@@ -36,6 +36,22 @@
         private Matrix<double> fuzzyCognitiveMatrix;
 
         /// <summary>
+        /// Моделлер.
+        /// </summary>
+        private DynamicModeller DynamicModeller = new DynamicModeller();
+
+        /// <summary>
+        /// Моделировать.
+        /// </summary>
+        /// <param name="steps"> Количество шагов. </param>
+        /// <returns> Состояния. </returns>
+        public List<Vector<double>> Model(int steps)
+        {
+            Vector<double> vector = new DenseVector(this.Concepts.Select(c => c.Value).ToArray());
+            return this.DynamicModeller.StartModelling(vector, this.fuzzyCognitiveMatrix, steps);
+        }
+
+        /// <summary>
         /// Таблица для отображения НКМ.
         /// </summary>
         public DataTable FuzzyCognitiveMatrixDataTable
