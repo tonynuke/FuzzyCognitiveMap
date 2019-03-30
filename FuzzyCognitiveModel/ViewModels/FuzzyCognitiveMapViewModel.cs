@@ -1,4 +1,7 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
 using System.Windows.Input;
 using Core.FuzzyCognitiveMap;
 
@@ -6,7 +9,15 @@ namespace FuzzyCognitiveModel.ViewModels
 {
     public class FuzzyCognitiveMapViewModel
     {
-        public FuzzyCognitiveMap FuzzyCognitiveMap { get; set; } = new FuzzyCognitiveMap();
+        /// <summary>
+        /// Когнитивная карта.
+        /// </summary>
+        public FuzzyCognitiveMap FuzzyCognitiveMap { get; } = new FuzzyCognitiveMap();
+
+        /// <summary>
+        /// Концепты.
+        /// </summary>
+        public ObservableCollection<Concept> Concepts { get; set; } = new ObservableCollection<Concept>();
 
         public DataView DataView
         {
@@ -57,15 +68,34 @@ namespace FuzzyCognitiveModel.ViewModels
         /// </summary>
         public ICommand ModellCommand =>
             this.modellCommand ?? (
-                this.modellCommand = new DelegateCommand(this.Model));
+                this.modellCommand = new DelegateCommand(this.StartModeling));
 
         /// <summary>
-        /// Удалить концепт.
+        /// Запустить динамическое моделирование.
         /// </summary>
         /// <param name="obj"> Параметр. </param>
-        private void Model(object obj)
+        private void StartModeling(object obj)
         {
-            this.FuzzyCognitiveMap.Model(10);
+            this.FuzzyCognitiveMap.StartModeling(10);
+        }
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        public FuzzyCognitiveMapViewModel()
+        {
+            FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            // TODO: оптимизировать через посылку события о кокретном удаленном/добавленном концепте.
+            this.Concepts.Clear();
+
+            foreach (var concept in FuzzyCognitiveMap.Concepts)
+            {
+                this.Concepts.Add(concept);
+            }
         }
     }
 }

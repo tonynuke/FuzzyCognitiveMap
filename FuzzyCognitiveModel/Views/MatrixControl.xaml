@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:FuzzyCognitiveModel.ViewModels"
-             xmlns:views="clr-namespace:FuzzyCognitiveModel.Views"
              mc:Ignorable="d"
              Loaded="MatrixControl_OnLoaded"
              Unloaded="MatrixControl_OnUnloaded"

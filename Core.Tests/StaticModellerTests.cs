@@ -17,7 +17,7 @@ namespace Core.Tests
             });
 
             var op = new StaticModeller();
-            var m = op.DoubleMatrix(matrix);
+            var m = op.PosiriveLinksMatrix(matrix);
 
             Assert.IsNotNull(m);
         }

@@ -49,6 +49,9 @@
     <Reference Include="MathNet.Numerics, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.4.7.0\lib\net461\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Msagl, Version=3.0.0.0, Culture=neutral, PublicKeyToken=640c57aa40e7ae7d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Msagl.1.1.3\lib\net40\Microsoft.Msagl.dll</HintPath>
+    </Reference>
     <Reference Include="QuickGraph, Version=3.6.61114.0, Culture=neutral, PublicKeyToken=f3fb40175eec2af3, processorArchitecture=MSIL">
       <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.dll</HintPath>
     </Reference>
@@ -93,7 +96,6 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="EdgeColorConverter.cs" />
     <Compile Include="ViewModels\FuzzyCognitiveMapViewModel.cs" />
-    <Compile Include="ViewModels\MatrixViewModel.cs" />
     <Compile Include="Views\ConceptsControl.xaml.cs">
       <DependentUpon>ConceptsControl.xaml</DependentUpon>
     </Compile>
@@ -102,6 +104,9 @@
     </Compile>
     <Compile Include="Views\ColoredMatrixControl.xaml.cs">
       <DependentUpon>ColoredMatrixControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GraphControl.xaml.cs">
+      <DependentUpon>GraphControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MatrixControl.xaml.cs">
       <DependentUpon>MatrixControl.xaml</DependentUpon>
@@ -130,6 +135,10 @@
     <Page Include="Views\ColoredMatrixControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\GraphControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MatrixControl.xaml">
       <SubType>Designer</SubType>

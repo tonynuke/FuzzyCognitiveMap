@@ -25,12 +25,8 @@ namespace FuzzyCognitiveModel
             this.FuzzyCognitiveViewModel.AddConceptCommand.Execute(null);
 
             this.FuzzyCognitiveViewModel.FuzzyCognitiveMap
-                .SetLinkBetweenConcepts(this.FuzzyCognitiveViewModel.FuzzyCognitiveMap.Concepts.First(), 
-                    this.FuzzyCognitiveViewModel.FuzzyCognitiveMap.Concepts.Last(), 10);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
+                .SetLinkBetweenConcepts(this.FuzzyCognitiveViewModel.Concepts.First(), 
+                    this.FuzzyCognitiveViewModel.Concepts.Last(), 0.2);
         }
     }
 }

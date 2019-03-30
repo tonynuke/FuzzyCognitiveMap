@@ -71,7 +71,7 @@ namespace FuzzyCognitiveModel.Views
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             this.SeriesCollection.Clear();
-            foreach (var concept in this.context.FuzzyCognitiveMap.Concepts)
+            foreach (var concept in this.context.Concepts)
             {
                 var series = new LineSeries
                 {
@@ -81,13 +81,13 @@ namespace FuzzyCognitiveModel.Views
                 this.SeriesCollection.Add(series);
             }
 
-            var values = this.context.FuzzyCognitiveMap.Model(Steps);
+            var values = this.context.FuzzyCognitiveMap.StartModeling(Steps);
 
             foreach (var value in values)
             {
-                for (int i = 0; i < this.context.FuzzyCognitiveMap.Concepts.Count; i++)
+                for (int i = 0; i < this.context.Concepts.Count; i++)
                 {
-                    this.SeriesCollection.Single(sc => sc.Title == this.context.FuzzyCognitiveMap.Concepts[i].Name).Values.Add(value[i]);
+                    this.SeriesCollection.Single(sc => sc.Title == this.context.Concepts[i].Name).Values.Add(value[i]);
                 }
             }
         }
@@ -96,7 +96,13 @@ namespace FuzzyCognitiveModel.Views
         {
             this.context = this.DataContext as FuzzyCognitiveMapViewModel;
             this.SeriesCollection.Clear();
-            foreach (var concept in this.context.FuzzyCognitiveMap.Concepts)
+
+            if (this.context == null)
+            {
+                return;
+            }
+
+            foreach (var concept in this.context.Concepts)
             {
                 var series = new LineSeries
                 {
