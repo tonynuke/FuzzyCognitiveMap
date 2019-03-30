@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using FuzzyCognitiveModel.ViewModels;
 
 namespace FuzzyCognitiveModel.Views
@@ -34,7 +35,22 @@ namespace FuzzyCognitiveModel.Views
 
         private void Matrix_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            this.context.FuzzyCognitiveMap.SetLinkViaMatrix(1, 2, 1);
+            var row = e.Row.GetIndex();
+            var column = int.Parse(e.Column.Header.ToString());
+            var enteredText = ((TextBox) e.EditingElement).Text;
+            double.TryParse(enteredText, out var value);
+
+            this.context.FuzzyCognitiveMap.SetLinkViaMatrix(row, column, value);
+        }
+
+        private void Matrix_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // HACK:
+            if (e.Key == Key.Return)
+            {
+                e.Handled = true;
+                this.Matrix.CommitEdit();
+            }
         }
     }
 }

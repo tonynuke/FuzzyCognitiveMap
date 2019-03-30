@@ -26,8 +26,9 @@
         /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// Значение концепта.
+        /// </summary>
         public double Value { get; set; }
-
-        public double NewValue { get; set; }
     }
 }

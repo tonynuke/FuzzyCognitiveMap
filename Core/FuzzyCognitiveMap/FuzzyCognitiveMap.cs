@@ -54,12 +54,12 @@
                 for (var rowIndex = 0; rowIndex < rowsCount; rowIndex++)
                 {
                     var newRow = dataTable.NewRow();
+                    dataTable.Rows.Add(newRow);
+
                     for (var c = 0; c < columnsCount; c++)
                     {
                         newRow[c] = this.fuzzyCognitiveMatrix[rowIndex, c];
                     }
-
-                    dataTable.Rows.Add(newRow);
                 }
 
                 return dataTable;
@@ -86,23 +86,16 @@
         public void SetLinkViaMatrix(int row, int column, double value)
         {
             this.fuzzyCognitiveMatrix = DenseMatrix.OfArray(this.FuzzyCognitiveMatrix);
-            this.fuzzyCognitiveMatrix[row, column] = value;
 
             Concept from = this.Concepts[row];
             Concept to = this.Concepts[column];
             this.SetLinkBetweenConcepts(from, to, value);
-
-            this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
         }
 
         /// <summary>
         /// НКМ.
         /// </summary>
-        [CanBeNull]
-        public double[,] FuzzyCognitiveMatrix
-        {
-            get => this.fuzzyCognitiveMatrix?.ToArray();
-        }
+        public double[,] FuzzyCognitiveMatrix => this.fuzzyCognitiveMatrix?.ToArray();
 
         /// <summary>
         /// Событие изменения свойства.
@@ -124,10 +117,12 @@
         public void SetLinkBetweenConcepts(Concept from, Concept to, double value)
         {
             ConceptsLink existingLink = null;
+            bool isSameConceptLinked = from == to;
 
-            if (from == to)
+            if (isSameConceptLinked)
             {
-                value = 0;
+                this.UpdateCognitiveMatrix(from, to, 0);
+                return;
             }
 
             if (value == 0)
@@ -136,6 +131,7 @@
                 if (existingLink != null)
                 {
                     this.conceptsLinks.Remove(existingLink);
+                    this.UpdateCognitiveMatrix(from, to, value);
                     return;
                 }
             }
@@ -145,25 +141,22 @@
             {
                 insertingValue = 1;
             }
-            else if (value < 0)
+            else if (value < -1)
             {
-                insertingValue = 0;
+                insertingValue = -1;
             }
 
             existingLink = this.conceptsLinks.SingleOrDefault(link => link.From == from && link.To == to);
             if (existingLink != null)
             {
                 existingLink.Value = value;
+                this.UpdateCognitiveMatrix(from, to, value);
                 return;
             }
 
             var newLink = new ConceptsLink(from, to, insertingValue);
             this.conceptsLinks.Add(newLink);
-
-            var rowChangedIndex = this.Concepts.IndexOf(from);
-            var columnChangedIndex = this.Concepts.IndexOf(to);
-
-            this.fuzzyCognitiveMatrix[rowChangedIndex, columnChangedIndex] = value;
+            this.UpdateCognitiveMatrix(from, to, insertingValue);
         }
 
         /// <summary>
@@ -229,6 +222,21 @@
             {
                 this.conceptsLinks.Remove(link);
             }
+        }
+
+        /// <summary>
+        /// Обновить связь между концептами в НКМ.
+        /// </summary>
+        /// <param name="from"> От. </param>
+        /// <param name="to"> К. </param>
+        /// <param name="value"> Значение связи. </param>
+        private void UpdateCognitiveMatrix(Concept from, Concept to, double value)
+        {
+            var rowChangedIndex = this.Concepts.IndexOf(from);
+            var columnChangedIndex = this.Concepts.IndexOf(to);
+            this.fuzzyCognitiveMatrix[rowChangedIndex, columnChangedIndex] = value;
+
+            this.OnPropertyChanged(nameof(this.FuzzyCognitiveMatrix));
         }
     }
 }
