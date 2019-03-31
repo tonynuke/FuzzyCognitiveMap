@@ -6,6 +6,9 @@
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
 
+    /// <summary>
+    /// Динамическое моделирование.
+    /// </summary>
     public class DynamicModeller
     {
         /// <summary>

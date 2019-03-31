@@ -4,16 +4,33 @@
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
 
+    /// <summary>
+    /// Статическое можелирование.
+    /// </summary>
     public class StaticModeller
     {
         public void Do(Matrix<double> matrix)
         {
-            var r = this.PosiriveLinksMatrix(matrix);
-            var pv = this.PositivePairMatrix(r);
-            var nv = this.NegativePairMatrix(r);
+            // шаг 1
+            var R = this.PosiriveLinksMatrix(matrix);
+
+            // шаг 2
+            var pv = this.PositivePairMatrix(R);
+            var nv = this.NegativePairMatrix(R);
+
+            // шаг 3
             var cons = this.ConsonanceMatrix(pv, nv);
-            var diss = this.DisonanceMatrix(cons);
-            var p = this.InfluenceMatrix(pv, nv);
+            var diss = this.DissonanceMatrix(cons);
+            var influence = this.InfluenceMatrix(pv, nv);
+
+            // шаг 4
+            var consInfluence = this.ConceptInfluence(cons);
+            var dissInfluence = this.ConceptInfluence(diss);
+            var conceptInfluence = this.ConceptInfluence(influence);
+
+            // шаг 5
+            var probability = this.CalculateProbability(null, conceptInfluence);
+            var damage = this.CalculateDamage(probability, consInfluence);
         }
 
         /// <summary>
@@ -171,7 +188,7 @@
 
             for (int i = 0; i < matrixSize; i++)
             {
-                for (int j = 0; j < matrixSize; i++)
+                for (int j = 0; j < matrixSize; j++)
                 {
                     var value = Math.Abs(positivePairs[i, j] + negativePairs[i, j]) /
                                 (Math.Abs(positivePairs[i, j]) + Math.Abs(negativePairs[i, j]));
@@ -187,14 +204,14 @@
         /// </summary>
         /// <param name="consonanceMatrix"> Матрица консонанса. </param>
         /// <returns> Матрица отрицательных пар </returns>
-        public Matrix<double> DisonanceMatrix(Matrix<double> consonanceMatrix)
+        public Matrix<double> DissonanceMatrix(Matrix<double> consonanceMatrix)
         {
             var matrixSize = consonanceMatrix.ColumnCount;
             Matrix result = new DenseMatrix(matrixSize, matrixSize);
 
             for (int i = 0; i < matrixSize; i++)
             {
-                for (int j = 0; j < matrixSize; i++)
+                for (int j = 0; j < matrixSize; j++)
                 {
                     result[i, j] = 1 - consonanceMatrix[i, j];
                 }
@@ -218,7 +235,7 @@
 
             for (int i = 0; i < matrixSize; i++)
             {
-                for (int j = 0; j < matrixSize; i++)
+                for (int j = 0; j < matrixSize; j++)
                 {
                     if (i == j)
                     {
@@ -232,6 +249,57 @@
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Вычислить влияние концептов на систему.
+        /// </summary>
+        /// <param name="matrix"> Консонанс. </param>
+        /// <returns> Влияние концептов на систему. </returns>
+        public Vector<double> ConceptInfluence(Matrix<double> matrix)
+        {
+            int vectorSize = matrix.ColumnCount;
+            Vector<double> result = DenseVector.Build.Dense(vectorSize);
+
+            for (int i = 0; i < vectorSize; i++)
+            {
+                result[i] = matrix.Row(i).Sum() / vectorSize;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Вычислить вероятность наступления неблагоприятного события.
+        /// </summary>
+        /// <param name="values"> Вектор хз чего. </param>
+        /// <param name="influence"> Влияние концептов. </param>
+        /// <returns> Вероятность наступления неблагоприятного события. </returns>
+        public double CalculateProbability(Vector<double> values, Vector<double> influence)
+        {
+            double probability = 0;
+
+            for (int k = 0; k < values.Count; k++)
+            {
+                for (int l = 0; l < influence.Count; l++)
+                {
+                    probability += values[l] * influence[k];
+                }
+            }
+
+            return probability / values.Count;
+        }
+
+        /// <summary>
+        /// Вычислить ущерб.
+        /// </summary>
+        /// <param name="probability"> Вероятность наступления неблагоприятного события. </param>
+        /// <param name="influence"> Влияние концептов на систему. </param>
+        /// <returns> Ущерб. </returns>
+        public double CalculateDamage(double probability, Vector<double> influence)
+        {
+            double damage = probability * influence.Sum();
+            return damage;
         }
 
         /// <summary>

@@ -16,7 +16,12 @@
         /// <summary>
         /// Название концепта по умолчанию.
         /// </summary>
-        private const string DefaultName = "Безымянный";
+        private const string DefaultName = "C";
+
+        /// <summary>
+        /// Индекс концепта.
+        /// </summary>
+        private static int conceptIndex = 1;
 
         /// <summary>
         /// Концепты.
@@ -201,7 +206,7 @@
         /// </summary>
         public void AddConcept()
         {
-            var defaultName = $"{DefaultName}{this.concepts.Count}";
+            var defaultName = $"{DefaultName}{conceptIndex}";
             var newConcept = new Concept
             {
                 Name = defaultName
@@ -220,6 +225,8 @@
                 this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertRow(insertIndex, insertingRow);
                 this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertColumn(insertIndex, insertingColumn);
             }
+
+            conceptIndex++;
 
             this.OnPropertyChanged(nameof(this.ConceptsLinks));
         }

@@ -21,5 +21,18 @@ namespace Core.Tests
 
             Assert.IsNotNull(m);
         }
+
+        [Test]
+        public void Smoke_test()
+        {
+            Matrix<double> matrix = DenseMatrix.OfArray(new double[,]
+            {
+                { 1, 2 },
+                { 3, 4 }
+            });
+
+            var op = new StaticModeller();
+            op.Do(matrix);
+        }
     }
 }
