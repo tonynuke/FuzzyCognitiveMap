@@ -24,7 +24,7 @@ namespace FuzzyCognitiveModel
                 new Concept {
                     Description = "выход из строя сервера",
                     Type = ConceptType.Resource,
-                    Value = 10000
+                    Value = 20900
                 },
                 new Concept {
                     Description = "нар. цел магистр.",

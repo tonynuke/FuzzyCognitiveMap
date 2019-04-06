@@ -168,6 +168,12 @@
                 {
                     var value = Math.Abs(positivePairs[i, j] + negativePairs[i, j]) /
                                 (Math.Abs(positivePairs[i, j]) + Math.Abs(negativePairs[i, j]));
+
+                    if (double.IsNaN(value))
+                    {
+                        value = 0;
+                    }
+
                     result[i, j] = value;
                 }
             }
@@ -248,22 +254,22 @@
         /// <summary>
         /// Вычислить вероятность наступления неблагоприятного события.
         /// </summary>
-        /// <param name="values"> Критичность уязвимости. </param>
-        /// <param name="influence"> Вероятность возникновения неблагоприятного события. </param>
+        /// <param name="criticality"> Критичность уязвимости. </param>
+        /// <param name="probability"> Вероятность возникновения неблагоприятного события. </param>
         /// <returns> Вероятность наступления неблагоприятного события. </returns>
-        public double CalculateProbability(Vector<double> values, Vector<double> influence)
+        public double CalculateProbability(Vector<double> criticality, Vector<double> probability)
         {
-            double probability = 0;
+            double result = 0;
 
-            for (int k = 0; k < values.Count; k++)
+            for (int k = 0; k < criticality.Count; k++)
             {
-                for (int l = 0; l < influence.Count; l++)
+                for (int l = 0; l < probability.Count; l++)
                 {
-                    probability += values[k] * influence[l];
+                    result += criticality[k] * probability[l];
                 }
             }
 
-            return probability / values.Count;
+            return result / criticality.Count;
         }
 
         /// <summary>

@@ -7,13 +7,48 @@
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
              Loaded="StaticModellerControl_OnLoaded"
-             Unloaded="StaticModelControl_OnUnloaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <TabControl HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="790">
-        <TabItem Header="Consonance">
-            <DataGrid Name="Matrix" ItemsSource="{Binding Consonance}">
-            </DataGrid>
+        <TabItem Header="Итоги">
+            <Grid>
+                <Label Content="Вероятность возникновения неблагоприятного события" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <Label Content="Ущерб составит" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="Probability" Content="{Binding FuzzyCognitiveModel.Probability}" HorizontalAlignment="Left" Margin="336,10,0,0" VerticalAlignment="Top"/>
+                <Label x:Name="Damage" Content="{Binding FuzzyCognitiveModel.Damage}" HorizontalAlignment="Left" Margin="113,36,0,0" VerticalAlignment="Top"/>
+            </Grid>
         </TabItem>
-        <TabItem Header="asdasdasd"></TabItem>
+        <TabItem Header="Консонанс">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*">
+                    </ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Column="0" x:Name="Consonance" ItemsSource="{Binding Consonance}" />
+                <DataGrid Grid.Column="1" x:Name="ConsonanceInfluence" ItemsSource="{Binding ConsonanceInfluence}" />
+            </Grid>
+        </TabItem>
+        <TabItem Header="Диссонанс">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*">
+                    </ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Column="0" x:Name="Dissonance" ItemsSource="{Binding Dissonance}" />
+                <DataGrid Grid.Column="1" x:Name="DissonanceInfluence" ItemsSource="{Binding DissonanceInfluence}" />
+            </Grid>
+        </TabItem>
+        <TabItem Header="Воздействие">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*">
+                    </ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <DataGrid Grid.Column="0" x:Name="Influence" ItemsSource="{Binding Influence}" />
+                <DataGrid Grid.Column="1" x:Name="ConceptInfluence" ItemsSource="{Binding ConceptInfluence}" />
+            </Grid>
+        </TabItem>
     </TabControl>
 </UserControl>

@@ -24,6 +24,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
                     <ColumnDefinition SharedSizeGroup="Type" Width="Auto"/>
+                    <ColumnDefinition SharedSizeGroup="Value" Width="Auto"/>
                     <ColumnDefinition SharedSizeGroup="Description" Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -34,8 +35,10 @@
                           ItemsSource="{Binding Source={StaticResource ConceptTypeEnum}}"
                           SelectedItem="{Binding Type}"/>
                 <TextBox Grid.Column="2" 
-                           Text="{Binding Path=Description}"/>
-                <Button Grid.Column="3" 
+                           Text="{Binding Path=Value}"/>
+                <TextBox Grid.Column="3" 
+                         Text="{Binding Path=Description}"/>
+                <Button Grid.Column="4" 
                         Content="X" 
                         Command="{Binding DataContext.DeleteConceptCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"></Button>
             </Grid>
@@ -52,12 +55,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="Name"/>
                 <ColumnDefinition SharedSizeGroup="Type"/>
+                <ColumnDefinition SharedSizeGroup="Value"/>
                 <ColumnDefinition SharedSizeGroup="Description"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" Text="Название"/>
             <TextBlock Grid.Column="1" Text="Тип"/>
-            <TextBlock Grid.Column="2" Text="Описание"/>
+            <TextBlock Grid.Column="2" Text="Значение"/>
+            <TextBlock Grid.Column="3" Text="Описание"/>
         </Grid>
 
         <ScrollViewer Grid.Row="1">

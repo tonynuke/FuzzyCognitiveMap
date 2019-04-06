@@ -55,7 +55,7 @@
         {
             if (!this.FuzzyCognitiveMap.Concepts.Any() || 
                 !this.FuzzyCognitiveMap.VulnerabilityCriticalities.Any() ||
-                !this.FuzzyCognitiveMap.ThreatPropbabilities.Any() ||
+                !this.FuzzyCognitiveMap.ThreatProbabilities.Any() ||
                 !this.FuzzyCognitiveMap.ResourceValues.Any())
             {
                 return;
@@ -78,7 +78,7 @@
             this.ConceptInfluence = this.staticModel.ConceptInfluence(this.Influence);
 
             var vulnerabilities = DenseVector.Build.DenseOfEnumerable(this.FuzzyCognitiveMap.VulnerabilityCriticalities);
-            var probabilities = DenseVector.Build.DenseOfEnumerable(this.FuzzyCognitiveMap.ThreatPropbabilities);
+            var probabilities = DenseVector.Build.DenseOfEnumerable(this.FuzzyCognitiveMap.ThreatProbabilities);
 
             this.Probability = this.staticModel.CalculateProbability(vulnerabilities, probabilities);
 

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using FuzzyCognitiveModel.ViewModels;
 
@@ -20,24 +19,23 @@ namespace FuzzyCognitiveModel.Views
         private void StaticModellerControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             this.context = this.DataContext as FuzzyCognitiveMapViewModel;
-            var fuzzyCognitiveMapViewModel = this.context;
-            if (fuzzyCognitiveMapViewModel != null)
+            var model = this.context;
+            if (model != null)
             {
-                fuzzyCognitiveMapViewModel.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
-                fuzzyCognitiveMapViewModel.FuzzyCognitiveModel.StartStaticicModeling();
-                this.Matrix.ItemsSource = context.ToDataView(this.context.FuzzyCognitiveModel.Consonance);
+                model.FuzzyCognitiveModel.StartStaticicModeling();
+
+                this.Consonance.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.Consonance);
+                this.ConsonanceInfluence.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.ConsonanceInfluence);
+
+                this.Dissonance.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.Dissonance);
+                this.DissonanceInfluence.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.DissonanceInfluence);
+
+                this.Influence.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.Influence);
+                this.ConceptInfluence.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.ConceptInfluence);
+
+                this.Probability.Content = model.FuzzyCognitiveModel.Probability;
+                this.Damage.Content = model.FuzzyCognitiveModel.Damage;
             }
-        }
-
-        private void StaticModelControl_OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged -= FuzzyCognitiveMapOnPropertyChanged;
-        }
-
-        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            this.context.FuzzyCognitiveModel.StartStaticicModeling();
-            this.Matrix.ItemsSource = context.ToDataView(this.context.FuzzyCognitiveModel.Consonance);
         }
     }
 }

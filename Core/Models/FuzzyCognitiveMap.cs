@@ -36,7 +36,7 @@
         /// <summary>
         /// Вероятности возникнвоения угроз.
         /// </summary>
-        public IEnumerable<double> ThreatPropbabilities => this.concepts.Where(c => c.Type == ConceptType.Threat).Select(c => c.Value);
+        public IEnumerable<double> ThreatProbabilities => this.concepts.Where(c => c.Type == ConceptType.Threat).Select(c => c.Value);
 
         /// <summary>
         /// Ценности ресурсов.

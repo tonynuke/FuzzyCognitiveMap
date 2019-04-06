@@ -21,7 +21,15 @@ namespace FuzzyCognitiveModel.ViewModels
 
         public DataView Consonance => this.ToDataView(this.FuzzyCognitiveModel.Consonance);
 
+        public DataView ConsonanceInfluence => this.ToDataView(this.FuzzyCognitiveModel.ConsonanceInfluence);
+
         public DataView Dissonance => this.ToDataView(this.FuzzyCognitiveModel.Dissonance);
+
+        public DataView DissonanceInfluence => this.ToDataView(this.FuzzyCognitiveModel.DissonanceInfluence);
+
+        public DataView Influence => this.ToDataView(this.FuzzyCognitiveModel.Influence);
+
+        public DataView ConceptInfluence => this.ToDataView(this.FuzzyCognitiveModel.ConceptInfluence);
 
         public DataView DataView => this.ToDataView(this.FuzzyCognitiveModel.FuzzyCognitiveMap.FuzzyCognitiveMatrix);
 
@@ -47,6 +55,34 @@ namespace FuzzyCognitiveModel.ViewModels
                 for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
                 {
                     newRow[columnIndex] = matrix[rowIndex, columnIndex];
+                }
+            }
+
+            return dataTable.DefaultView;
+        }
+
+        /// <summary>
+        /// Преобразовать в таблицу данных.
+        /// </summary>
+        public DataView ToDataView(Vector<double> vector)
+        {
+            var rowsCount = vector?.Count;
+            var columnsCount = 1;
+            var dataTable = new DataTable();
+
+            for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+            {
+                dataTable.Columns.Add(new DataColumn(columnIndex.ToString()));
+            }
+
+            for (var rowIndex = 0; rowIndex < rowsCount; rowIndex++)
+            {
+                var newRow = dataTable.NewRow();
+                dataTable.Rows.Add(newRow);
+
+                for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+                {
+                    newRow[columnIndex] = vector[rowIndex];
                 }
             }
 

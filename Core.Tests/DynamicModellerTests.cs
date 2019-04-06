@@ -1,7 +1,6 @@
-using Core.Modeling;
-
 namespace Core.Tests
 {
+    using Core.Modeling;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
     using NUnit.Framework;
