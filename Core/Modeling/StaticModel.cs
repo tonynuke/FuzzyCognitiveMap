@@ -9,30 +9,6 @@
     /// </summary>
     public class StaticModel
     {
-        public void Do(Matrix<double> matrix)
-        {
-            // шаг 1
-            var R = this.PositiveLinksMatrix(matrix);
-
-            // шаг 2
-            var pv = this.PositivePairMatrix(R);
-            var nv = this.NegativePairMatrix(R);
-
-            // шаг 3
-            var cons = this.ConsonanceMatrix(pv, nv);
-            var diss = this.DissonanceMatrix(cons);
-            var influence = this.InfluenceMatrix(pv, nv);
-
-            // шаг 4
-            var consInfluence = this.ConceptInfluence(cons);
-            var dissInfluence = this.ConceptInfluence(diss);
-            var conceptInfluence = this.ConceptInfluence(influence);
-
-            // шаг 5
-            var probability = this.CalculateProbability(null, conceptInfluence);
-            var damage = this.CalculateDamage(probability, consInfluence);
-        }
-
         /// <summary>
         /// Рассчитать транзитивно замкнутую матрицу.
         /// </summary>
@@ -101,7 +77,7 @@
 
                     double value = matrix[i, j];
 
-                    if (value >= 0)
+                    if (value > 0)
                     {
                         result[i2 - 1, j2 - 1] = value;
                         result[i2, j2] = value;
@@ -166,7 +142,7 @@
                 for (int j = 0; j < matrixSize; j++)
                 {
                     int j2 = this.CalculateIndex(j);
-                    result[i, j] = Math.Max(matrix[i2 - 1, j2], matrix[i2, j2 - 1]);
+                    result[i, j] = -Math.Max(matrix[i2 - 1, j2], matrix[i2, j2 - 1]);
                 }
             }
 
@@ -283,7 +259,7 @@
             {
                 for (int l = 0; l < influence.Count; l++)
                 {
-                    probability += values[l] * influence[k];
+                    probability += values[k] * influence[l];
                 }
             }
 
@@ -298,8 +274,7 @@
         /// <returns> Ущерб. </returns>
         public double CalculateDamage(double probability, Vector<double> influence)
         {
-            double damage = probability * influence.Sum();
-            return damage;
+            return probability * influence.Sum();
         }
 
         /// <summary>
@@ -309,13 +284,7 @@
         /// <returns> Индекс с учетом поправки. </returns>
         private int CalculateIndex(int sourceIndex)
         {
-            var newIndex = 1;
-            if (sourceIndex >= 1)
-            {
-                newIndex = (sourceIndex * 2) - 1;
-            }
-
-            return newIndex;
+            return sourceIndex == 0 ? 1 : (sourceIndex * 2) + 1;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace Core.Models
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using Core.Modeling;
@@ -37,23 +38,52 @@
 
         public Matrix<double> Influence { get; private set; }
 
+        public Vector<double> ConsonanceInfluence { get; private set; }
+
+        public Vector<double> DissonanceInfluence { get; private set; }
+
+        public Vector<double> ConceptInfluence { get; private set; }
+
+        public double Probability { get; private set; }
+
+        public double Damage { get; private set; }
+
         /// <summary>
         /// Запустить статическое моделирование.
         /// </summary>
         public void StartStaticicModeling()
         {
-            var weights = this.FuzzyCognitiveMap.FuzzyCognitiveMatrix;
-            this.TransitiveClosure = this.staticModel.TransitiveClousure(weights);
+            if (!this.FuzzyCognitiveMap.Concepts.Any() || 
+                !this.FuzzyCognitiveMap.VulnerabilityCriticalities.Any() ||
+                !this.FuzzyCognitiveMap.ThreatPropbabilities.Any() ||
+                !this.FuzzyCognitiveMap.ResourceValues.Any())
+            {
+                return;
+            }
 
-            this.PositiveLinks = this.staticModel.PositiveLinksMatrix(this.TransitiveClosure);
+            var weights = this.FuzzyCognitiveMap.FuzzyCognitiveMatrix;
+            //this.TransitiveClosure = this.staticModel.TransitiveClousure(weights);
+
+            this.PositiveLinks = this.staticModel.PositiveLinksMatrix(weights);
 
             this.PositivePairs = this.staticModel.PositivePairMatrix(this.PositiveLinks);
             this.NegativePairs = this.staticModel.NegativePairMatrix(this.PositiveLinks);
 
             this.Consonance = this.staticModel.ConsonanceMatrix(this.PositivePairs, this.NegativePairs);
             this.Dissonance = this.staticModel.DissonanceMatrix(this.Consonance);
-
             this.Influence = this.staticModel.InfluenceMatrix(this.PositivePairs, this.NegativePairs);
+
+            this.ConsonanceInfluence = this.staticModel.ConceptInfluence(this.Consonance);
+            this.DissonanceInfluence = this.staticModel.ConceptInfluence(this.Dissonance);
+            this.ConceptInfluence = this.staticModel.ConceptInfluence(this.Influence);
+
+            var vulnerabilities = DenseVector.Build.DenseOfEnumerable(this.FuzzyCognitiveMap.VulnerabilityCriticalities);
+            var probabilities = DenseVector.Build.DenseOfEnumerable(this.FuzzyCognitiveMap.ThreatPropbabilities);
+
+            this.Probability = this.staticModel.CalculateProbability(vulnerabilities, probabilities);
+
+            var values = DenseVector.Build.DenseOfEnumerable(this.FuzzyCognitiveMap.ResourceValues);
+            this.Damage = this.staticModel.CalculateDamage(this.Probability, values);
         }
 
         /// <summary>

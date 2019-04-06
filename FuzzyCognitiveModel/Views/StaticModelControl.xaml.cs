@@ -24,9 +24,9 @@ namespace FuzzyCognitiveModel.Views
             if (fuzzyCognitiveMapViewModel != null)
             {
                 fuzzyCognitiveMapViewModel.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+                fuzzyCognitiveMapViewModel.FuzzyCognitiveModel.StartStaticicModeling();
+                this.Matrix.ItemsSource = context.ToDataView(this.context.FuzzyCognitiveModel.Consonance);
             }
-
-            this.context?.FuzzyCognitiveModel.StartStaticicModeling();
         }
 
         private void StaticModelControl_OnUnloaded(object sender, RoutedEventArgs e)
@@ -36,6 +36,7 @@ namespace FuzzyCognitiveModel.Views
 
         private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
+            this.context.FuzzyCognitiveModel.StartStaticicModeling();
             this.Matrix.ItemsSource = context.ToDataView(this.context.FuzzyCognitiveModel.Consonance);
         }
     }

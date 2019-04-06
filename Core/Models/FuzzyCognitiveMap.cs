@@ -34,6 +34,21 @@
         public IEnumerable<Concept> Concepts => this.concepts;
 
         /// <summary>
+        /// Вероятности возникнвоения угроз.
+        /// </summary>
+        public IEnumerable<double> ThreatPropbabilities => this.concepts.Where(c => c.Type == ConceptType.Threat).Select(c => c.Value);
+
+        /// <summary>
+        /// Ценности ресурсов.
+        /// </summary>
+        public IEnumerable<double> ResourceValues => this.concepts.Where(c => c.Type == ConceptType.Resource).Select(c => c.Value);
+
+        /// <summary>
+        /// Критичность уязвимостей.
+        /// </summary>
+        public IEnumerable<double> VulnerabilityCriticalities => this.concepts.Where(c => c.Type == ConceptType.Vulnerability).Select(c => c.Value);
+
+        /// <summary>
         /// Связи между концептами.
         /// </summary>
         private readonly List<ConceptsLink> conceptsLinks = new List<ConceptsLink>();
@@ -151,7 +166,7 @@
         /// <summary>
         /// Добавить новый концепт.
         /// </summary>
-        public void AddConcept()
+        public Concept AddConcept()
         {
             var defaultName = $"{DefaultName}{conceptIndex}";
             var newConcept = new Concept
@@ -159,6 +174,7 @@
                 Name = defaultName
             };
             this.concepts.Add(newConcept);
+            conceptIndex++;
 
             if (this.concepts.Count == 1)
             {
@@ -173,7 +189,32 @@
                 this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertColumn(insertIndex, insertingColumn);
             }
 
+            this.OnPropertyChanged(nameof(this.ConceptsLinks));
+
+            return newConcept;
+        }
+
+        /// <summary>
+        /// Добавить новый концепт.
+        /// </summary>
+        public void AddConcept(Concept concept)
+        {
+            concept.Name = $"{DefaultName}{conceptIndex}";
+            this.concepts.Add(concept);
             conceptIndex++;
+
+            if (this.concepts.Count == 1)
+            {
+                this.fuzzyCognitiveMatrix = new DenseMatrix(1);
+            }
+            else if (this.concepts.Count > 1)
+            {
+                var insertIndex = this.concepts.Count - 1;
+                var insertingRow = new DenseVector(this.concepts.Count - 1);
+                var insertingColumn = new DenseVector(this.concepts.Count);
+                this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertRow(insertIndex, insertingRow);
+                this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertColumn(insertIndex, insertingColumn);
+            }
 
             this.OnPropertyChanged(nameof(this.ConceptsLinks));
         }

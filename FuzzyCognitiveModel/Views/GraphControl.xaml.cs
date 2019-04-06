@@ -53,6 +53,12 @@ namespace FuzzyCognitiveModel.Views
             }
 
             var concepts = model.Concepts;
+
+            if (concepts.Count == 0)
+            {
+                return;
+            }
+
             string[] vertices = new string[concepts.Count];
             for (int i = 0; i < concepts.Count; i++)
             {
