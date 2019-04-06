@@ -1,8 +1,8 @@
-﻿namespace Core
+﻿namespace Core.Models
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Modeling;
+    using Core.Modeling;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
 

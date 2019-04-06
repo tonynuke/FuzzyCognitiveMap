@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Core.Models
 {
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -26,12 +26,12 @@
         /// <summary>
         /// Концепты.
         /// </summary>
-        private List<Concept.Concept> concepts = new List<Concept.Concept>();
+        private List<Concept> concepts = new List<Concept>();
 
         /// <summary>
         /// Концепты.
         /// </summary>
-        public IEnumerable<Concept.Concept> Concepts => this.concepts;
+        public IEnumerable<Concept> Concepts => this.concepts;
 
         /// <summary>
         /// Связи между концептами.
@@ -92,8 +92,8 @@
                 this.fuzzyCognitiveMatrix = new DenseMatrix(matrixSize, matrixSize);
             }
 
-            Concept.Concept from = this.concepts[row];
-            Concept.Concept to = this.concepts[column];
+            Concept from = this.concepts[row];
+            Concept to = this.concepts[column];
             this.SetLinkBetweenConcepts(from, to, value);
         }
 
@@ -103,7 +103,7 @@
         /// <param name="from"> От. </param>
         /// <param name="to"> К. </param>
         /// <param name="value"> Значение связи. </param>
-        public void SetLinkBetweenConcepts(Concept.Concept from, Concept.Concept to, double value)
+        public void SetLinkBetweenConcepts(Concept from, Concept to, double value)
         {
             ConceptsLink existingLink = null;
             bool isSameConceptLinked = from == to;
@@ -154,7 +154,7 @@
         public void AddConcept()
         {
             var defaultName = $"{DefaultName}{conceptIndex}";
-            var newConcept = new Concept.Concept
+            var newConcept = new Concept
             {
                 Name = defaultName
             };
@@ -182,7 +182,7 @@
         /// Удалить концепт.
         /// </summary>
         /// <param name="concept"> Концепт. </param>
-        public void DeleteConcept(Concept.Concept concept)
+        public void DeleteConcept(Concept concept)
         {
             var removeIndex = this.concepts.IndexOf(concept);
 
@@ -206,7 +206,7 @@
         /// Удалить связи в которых участвует концепт.
         /// </summary>
         /// <param name="concept"> Концепт. </param>
-        private void RemoveConceptLinks(Concept.Concept concept)
+        private void RemoveConceptLinks(Concept concept)
         {
             var linksToRemove = this.conceptsLinks.Where(link => link.From == concept || link.To == concept).ToList();
             foreach (var link in linksToRemove)
@@ -221,7 +221,7 @@
         /// <param name="from"> От. </param>
         /// <param name="to"> К. </param>
         /// <param name="value"> Значение связи. </param>
-        private void UpdateCognitiveMatrix(Concept.Concept from, Concept.Concept to, double value)
+        private void UpdateCognitiveMatrix(Concept from, Concept to, double value)
         {
             var rowChangedIndex = this.concepts.IndexOf(from);
             var columnChangedIndex = this.concepts.IndexOf(to);

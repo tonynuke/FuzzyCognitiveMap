@@ -12,7 +12,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <summary>
         /// Когнитивная карта.
         /// </summary>
-        public Core.FuzzyCognitiveModel FuzzyCognitiveModel { get; } = new Core.FuzzyCognitiveModel();
+        public Core.Models.FuzzyCognitiveModel FuzzyCognitiveModel { get; } = new Core.Models.FuzzyCognitiveModel();
 
         /// <summary>
         /// Концепты.
