@@ -1,3 +1,5 @@
+using Core.Modeling;
+
 namespace Core.Tests
 {
     using MathNet.Numerics.LinearAlgebra;
@@ -16,8 +18,8 @@ namespace Core.Tests
                 { 3, 4 }
             });
 
-            var op = new StaticModeller();
-            var m = op.PosiriveLinksMatrix(matrix);
+            var op = new StaticModel();
+            var m = op.PositiveLinksMatrix(matrix);
 
             Assert.IsNotNull(m);
         }
@@ -31,7 +33,7 @@ namespace Core.Tests
                 { 3, 4 }
             });
 
-            var op = new StaticModeller();
+            var op = new StaticModel();
             op.Do(matrix);
         }
     }

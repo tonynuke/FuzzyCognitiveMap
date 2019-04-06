@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using FuzzyCognitiveModel.ViewModels;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -12,7 +11,7 @@ namespace FuzzyCognitiveModel.Views
     /// <summary>
     /// Логика взаимодействия для DynamicModellingControl.xaml
     /// </summary>
-    public partial class DynamicModellingControl : UserControl
+    public partial class DynamicModelControl : UserControl
     {
         private const int Steps = 10;
 
@@ -22,7 +21,7 @@ namespace FuzzyCognitiveModel.Views
         public string[] Labels { get; set; }
         public Func<double, string> YFormatter { get; set; }
 
-        public DynamicModellingControl()
+        public DynamicModelControl()
         {
             InitializeComponent();
 
@@ -81,7 +80,7 @@ namespace FuzzyCognitiveModel.Views
                 this.SeriesCollection.Add(series);
             }
 
-            var values = this.context.FuzzyCognitiveMap.StartModeling(Steps);
+            var values = this.context.FuzzyCognitiveModel.StartDynamicModeling(Steps);
 
             foreach (var value in values)
             {

@@ -65,6 +65,7 @@
       <HintPath>..\packages\QuickGraph.3.6.61119.7\lib\net4\QuickGraph.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
@@ -92,6 +93,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="LinkEdge.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="EdgeColorConverter.cs" />
@@ -99,17 +101,21 @@
     <Compile Include="Views\ConceptsControl.xaml.cs">
       <DependentUpon>ConceptsControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DynamicModellingControl.xaml.cs">
-      <DependentUpon>DynamicModellingControl.xaml</DependentUpon>
+    <Compile Include="Views\DynamicModelControl.xaml.cs">
+      <DependentUpon>DynamicModelControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ColoredMatrixControl.xaml.cs">
       <DependentUpon>ColoredMatrixControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\EnumDisplayNameConverter.cs" />
     <Compile Include="Views\GraphControl.xaml.cs">
       <DependentUpon>GraphControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MatrixControl.xaml.cs">
       <DependentUpon>MatrixControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StaticModelControl.xaml.cs">
+      <DependentUpon>StaticModelControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ValueToColorConverter.cs" />
     <Page Include="MainWindow.xaml">
@@ -128,7 +134,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DynamicModellingControl.xaml">
+    <Page Include="Views\DynamicModelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MatrixControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StaticModelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

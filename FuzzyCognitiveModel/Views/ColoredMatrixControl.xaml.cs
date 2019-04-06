@@ -20,7 +20,7 @@ namespace FuzzyCognitiveModel.Views
 
         private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
-            this.Matrix.ItemsSource = this.context.FuzzyCognitiveMap.Matrix;
+            this.Matrix.ItemsSource = this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.Matrix;
         }
 
         private void MatrixColored_OnLoaded(object sender, RoutedEventArgs e)
@@ -29,13 +29,13 @@ namespace FuzzyCognitiveModel.Views
             var fuzzyCognitiveMapViewModel = this.context;
             if (fuzzyCognitiveMapViewModel != null)
             {
-                fuzzyCognitiveMapViewModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+                fuzzyCognitiveMapViewModel.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
             }
         }
 
         private void MatrixColored_OnUnloaded(object sender, RoutedEventArgs e)
         {
-            this.context.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
         }
     }
 }

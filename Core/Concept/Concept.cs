@@ -1,4 +1,4 @@
-﻿namespace Core.FuzzyCognitiveMap
+﻿namespace Core.Concept
 {
     /// <summary>
     /// Концепт.
@@ -15,11 +15,6 @@
         /// Тип.
         /// </summary>
         public ConceptType Type { get; set; }
-
-        /// <summary>
-        /// Целевой.
-        /// </summary>
-        public bool IsTarget { get; set; }
 
         /// <summary>
         /// Описание.

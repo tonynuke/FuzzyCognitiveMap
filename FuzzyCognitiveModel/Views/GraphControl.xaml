@@ -15,8 +15,18 @@
     <UserControl.Resources>
         <fuzzyCognitiveModel:EdgeColorConverter x:Key="edgeToEdgeColorConverter"/>
         <Style TargetType="{x:Type controls1:EdgeControl}">
+            <Style.Resources>
+                <ToolTip x:Key="ToolTipContent">
+                    <StackPanel>
+                        <TextBlock FontWeight="Bold" Text="Edge.ID"/>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource Self}, Path=Edge.Tag, Converter={StaticResource edgeToEdgeColorConverter}}"/>
+                    </StackPanel>
+                </ToolTip>
+            </Style.Resources>
             <Style.Setters>
-                <Setter Property="Foreground" Value="{Binding RelativeSource={RelativeSource Self},Path=Edge.EdgeColor,Converter={StaticResource edgeToEdgeColorConverter}}"/>
+                <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
+                <Setter Property="Foreground" 
+                        Value="{Binding RelativeSource={RelativeSource Self}, Path=Edge.EdgeColor, Converter={StaticResource edgeToEdgeColorConverter}}"/>
             </Style.Setters>
         </Style>
     </UserControl.Resources>
@@ -24,7 +34,7 @@
     <Grid>
         <controls:ZoomControl>
             <controls1:GraphLayout x:Name="graphLayout"
-                               Graph="{Binding ElementName=root,Path=GraphToVisualize}"
+                               Graph="{Binding ElementName=root, Path=GraphToVisualize}"
                                LayoutAlgorithmType="FR" OverlapRemovalAlgorithmType="FSA"
                                HighlightAlgorithmType="Simple" />
         </controls:ZoomControl>

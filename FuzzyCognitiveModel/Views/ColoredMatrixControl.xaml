@@ -28,5 +28,5 @@
         </DataTemplate>
 
     </UserControl.Resources>
-    <ItemsControl x:Name="Matrix" ItemsSource="{Binding FuzzyCognitiveMap.Matrix}" ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
+    <ItemsControl x:Name="Matrix" ItemsSource="{Binding FuzzyCognitiveModel.Matrix}" ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
 </UserControl>

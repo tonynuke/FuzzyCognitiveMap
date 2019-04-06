@@ -1,4 +1,4 @@
-﻿namespace Core.FuzzyCognitiveMap
+﻿namespace Core.Concept
 {
     using System;
 

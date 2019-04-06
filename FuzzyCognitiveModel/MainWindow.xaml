@@ -18,13 +18,16 @@
                     <views:MatrixControl x:Name="MatrixControl" DataContext="{Binding FuzzyCognitiveViewModel}" Margin="0,10,10,10" HorizontalAlignment="Right" Width="368"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Динамическое моделирование">
-                <Grid Background="#FFE5E5E5">
-                    <views:DynamicModellingControl DataContext="{Binding FuzzyCognitiveViewModel}" Margin="10" />
-                </Grid>
-            </TabItem>
             <TabItem Header="Граф">
                 <views:GraphControl x:Name="GraphControl" DataContext="{Binding FuzzyCognitiveViewModel}"></views:GraphControl>
+            </TabItem>
+            <TabItem Header="Статическое моделирование">
+                <views:StaticModelControl x:Name="StaticModel" DataContext="{Binding FuzzyCognitiveViewModel}"></views:StaticModelControl>
+            </TabItem>
+            <TabItem Header="Динамическое моделирование">
+                <Grid Background="#FFE5E5E5">
+                    <views:DynamicModelControl DataContext="{Binding FuzzyCognitiveViewModel}" Margin="10" />
+                </Grid>
             </TabItem>
         </TabControl>
     </Grid>

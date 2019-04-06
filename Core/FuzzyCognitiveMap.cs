@@ -1,10 +1,10 @@
-﻿namespace Core.FuzzyCognitiveMap
+﻿namespace Core
 {
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Data;
     using System.Linq;
     using System.Runtime.CompilerServices;
+    using Concept;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
 
@@ -26,12 +26,12 @@
         /// <summary>
         /// Концепты.
         /// </summary>
-        private List<Concept> concepts = new List<Concept>();
+        private List<Concept.Concept> concepts = new List<Concept.Concept>();
 
         /// <summary>
         /// Концепты.
         /// </summary>
-        public IEnumerable<Concept> Concepts => this.concepts;
+        public IEnumerable<Concept.Concept> Concepts => this.concepts;
 
         /// <summary>
         /// Связи между концептами.
@@ -49,20 +49,9 @@
         private Matrix<double> fuzzyCognitiveMatrix;
 
         /// <summary>
-        /// Моделлер.
+        /// Нечеткая когнитивная матрица (НКМ).
         /// </summary>
-        private DynamicModeller dynamicModeller = new DynamicModeller();
-
-        /// <summary>
-        /// Запустить динамическое моделирование.
-        /// </summary>
-        /// <param name="steps"> Количество шагов. </param>
-        /// <returns> Состояния. </returns>
-        public List<Vector<double>> StartModeling(int steps)
-        {
-            Vector<double> vector = new DenseVector(this.concepts.Select(c => c.Value).ToArray());
-            return this.dynamicModeller.StartModelling(vector, this.fuzzyCognitiveMatrix, steps);
-        }
+        public Matrix<double> FuzzyCognitiveMatrix => this.fuzzyCognitiveMatrix;
 
         /// <summary>
         /// Матрица.
@@ -90,48 +79,6 @@
         }
 
         /// <summary>
-        /// Таблица для отображения НКМ.
-        /// </summary>
-        public DataTable FuzzyCognitiveMatrixDataTable
-        {
-            get
-            {
-                var rowsCount = this.fuzzyCognitiveMatrix?.RowCount;
-                var columnsCount = this.fuzzyCognitiveMatrix?.ColumnCount;
-                var dataTable = new DataTable();
-
-                for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
-                {
-                    dataTable.Columns.Add(new DataColumn(columnIndex.ToString()));
-                }
-
-                for (var rowIndex = 0; rowIndex < rowsCount; rowIndex++)
-                {
-                    var newRow = dataTable.NewRow();
-                    dataTable.Rows.Add(newRow);
-
-                    for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
-                    {
-                        newRow[columnIndex] = this.fuzzyCognitiveMatrix[rowIndex, columnIndex];
-                    }
-                }
-
-                return dataTable;
-            }
-
-            set
-            {
-                for (var row = 0; row < value.Rows.Count; row++)
-                {
-                    for (var column = 0; column < value.Columns.Count; row++)
-                    {
-                        this.fuzzyCognitiveMatrix[row, column] = (double)value.Rows[row][column];
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Установить значение связи через НКМ.
         /// </summary>
         /// <param name="row"> Строка. </param>
@@ -145,8 +92,8 @@
                 this.fuzzyCognitiveMatrix = new DenseMatrix(matrixSize, matrixSize);
             }
 
-            Concept from = this.concepts[row];
-            Concept to = this.concepts[column];
+            Concept.Concept from = this.concepts[row];
+            Concept.Concept to = this.concepts[column];
             this.SetLinkBetweenConcepts(from, to, value);
         }
 
@@ -156,7 +103,7 @@
         /// <param name="from"> От. </param>
         /// <param name="to"> К. </param>
         /// <param name="value"> Значение связи. </param>
-        public void SetLinkBetweenConcepts(Concept from, Concept to, double value)
+        public void SetLinkBetweenConcepts(Concept.Concept from, Concept.Concept to, double value)
         {
             ConceptsLink existingLink = null;
             bool isSameConceptLinked = from == to;
@@ -207,7 +154,7 @@
         public void AddConcept()
         {
             var defaultName = $"{DefaultName}{conceptIndex}";
-            var newConcept = new Concept
+            var newConcept = new Concept.Concept
             {
                 Name = defaultName
             };
@@ -235,7 +182,7 @@
         /// Удалить концепт.
         /// </summary>
         /// <param name="concept"> Концепт. </param>
-        public void DeleteConcept(Concept concept)
+        public void DeleteConcept(Concept.Concept concept)
         {
             var removeIndex = this.concepts.IndexOf(concept);
 
@@ -259,7 +206,7 @@
         /// Удалить связи в которых участвует концепт.
         /// </summary>
         /// <param name="concept"> Концепт. </param>
-        private void RemoveConceptLinks(Concept concept)
+        private void RemoveConceptLinks(Concept.Concept concept)
         {
             var linksToRemove = this.conceptsLinks.Where(link => link.From == concept || link.To == concept).ToList();
             foreach (var link in linksToRemove)
@@ -274,7 +221,7 @@
         /// <param name="from"> От. </param>
         /// <param name="to"> К. </param>
         /// <param name="value"> Значение связи. </param>
-        private void UpdateCognitiveMatrix(Concept from, Concept to, double value)
+        private void UpdateCognitiveMatrix(Concept.Concept from, Concept.Concept to, double value)
         {
             var rowChangedIndex = this.concepts.IndexOf(from);
             var columnChangedIndex = this.concepts.IndexOf(to);

@@ -18,19 +18,24 @@ namespace FuzzyCognitiveModel.Views
             this.InitializeComponent();
         }
 
-        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            this.Matrix.ItemsSource = this.context.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable.DefaultView;
-        }
-
         private void MatrixControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             this.context = this.DataContext as FuzzyCognitiveMapViewModel;
             var fuzzyCognitiveMapViewModel = this.context;
             if (fuzzyCognitiveMapViewModel != null)
             {
-                fuzzyCognitiveMapViewModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+                fuzzyCognitiveMapViewModel.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
             }
+        }
+
+        private void MatrixControl_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged -= FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            this.Matrix.ItemsSource = context.ToDataView(this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.FuzzyCognitiveMatrix);
         }
 
         private void Matrix_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
@@ -40,7 +45,7 @@ namespace FuzzyCognitiveModel.Views
             var enteredText = ((TextBox) e.EditingElement).Text;
             double.TryParse(enteredText, out var value);
 
-            this.context.FuzzyCognitiveMap.SetLinkViaMatrix(row, column, value);
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.SetLinkViaMatrix(row, column, value);
         }
 
         private void Matrix_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -51,11 +56,6 @@ namespace FuzzyCognitiveModel.Views
                 e.Handled = true;
                 this.Matrix.CommitEdit();
             }
-        }
-
-        private void MatrixControl_OnUnloaded(object sender, RoutedEventArgs e)
-        {
-            this.context.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
         }
     }
 }

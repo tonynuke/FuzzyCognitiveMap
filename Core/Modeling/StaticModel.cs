@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Core.Modeling
 {
     using System;
     using MathNet.Numerics.LinearAlgebra;
@@ -7,12 +7,12 @@
     /// <summary>
     /// Статическое можелирование.
     /// </summary>
-    public class StaticModeller
+    public class StaticModel
     {
         public void Do(Matrix<double> matrix)
         {
             // шаг 1
-            var R = this.PosiriveLinksMatrix(matrix);
+            var R = this.PositiveLinksMatrix(matrix);
 
             // шаг 2
             var pv = this.PositivePairMatrix(R);
@@ -81,7 +81,7 @@
         /// </summary>
         /// <param name="matrix"> Матрица влияний. </param>
         /// <returns> Матрица положительных связей. </returns>
-        public Matrix<double> PosiriveLinksMatrix(Matrix<double> matrix)
+        public Matrix<double> PositiveLinksMatrix(Matrix<double> matrix)
         {
             if (matrix.RowCount != matrix.ColumnCount)
             {
@@ -272,8 +272,8 @@
         /// <summary>
         /// Вычислить вероятность наступления неблагоприятного события.
         /// </summary>
-        /// <param name="values"> Вектор хз чего. </param>
-        /// <param name="influence"> Влияние концептов. </param>
+        /// <param name="values"> Критичность уязвимости. </param>
+        /// <param name="influence"> Вероятность возникновения неблагоприятного события. </param>
         /// <returns> Вероятность наступления неблагоприятного события. </returns>
         public double CalculateProbability(Vector<double> values, Vector<double> influence)
         {

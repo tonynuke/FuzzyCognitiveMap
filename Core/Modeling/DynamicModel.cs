@@ -1,4 +1,4 @@
-﻿namespace Core
+﻿namespace Core.Modeling
 {
     using System;
     using System.Collections.Generic;
@@ -9,7 +9,7 @@
     /// <summary>
     /// Динамическое моделирование.
     /// </summary>
-    public class DynamicModeller
+    public class DynamicModel
     {
         /// <summary>
         /// Запустить моделирование.

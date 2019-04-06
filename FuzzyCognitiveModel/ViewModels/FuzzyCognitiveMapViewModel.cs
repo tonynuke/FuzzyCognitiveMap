@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Windows.Input;
-using Core.FuzzyCognitiveMap;
+using Core.Concept;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace FuzzyCognitiveModel.ViewModels
 {
@@ -12,17 +12,45 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <summary>
         /// Когнитивная карта.
         /// </summary>
-        public FuzzyCognitiveMap FuzzyCognitiveMap { get; } = new FuzzyCognitiveMap();
+        public Core.FuzzyCognitiveModel FuzzyCognitiveModel { get; } = new Core.FuzzyCognitiveModel();
 
         /// <summary>
         /// Концепты.
         /// </summary>
         public ObservableCollection<Concept> Concepts { get; set; } = new ObservableCollection<Concept>();
 
-        public DataView DataView
+        public DataView Consonance => this.ToDataView(this.FuzzyCognitiveModel.Consonance);
+
+        public DataView Dissonance => this.ToDataView(this.FuzzyCognitiveModel.Dissonance);
+
+        public DataView DataView => this.ToDataView(this.FuzzyCognitiveModel.FuzzyCognitiveMap.FuzzyCognitiveMatrix);
+
+        /// <summary>
+        /// Преобразовать в таблицу данных.
+        /// </summary>
+        public DataView ToDataView(Matrix<double> matrix)
         {
-            set { this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable = value.Table; }
-            get => this.FuzzyCognitiveMap.FuzzyCognitiveMatrixDataTable.DefaultView;
+            var rowsCount = matrix?.RowCount;
+            var columnsCount = matrix?.ColumnCount;
+            var dataTable = new DataTable();
+
+            for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+            {
+                dataTable.Columns.Add(new DataColumn(columnIndex.ToString()));
+            }
+
+            for (var rowIndex = 0; rowIndex < rowsCount; rowIndex++)
+            {
+                var newRow = dataTable.NewRow();
+                dataTable.Rows.Add(newRow);
+
+                for (var columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+                {
+                    newRow[columnIndex] = matrix[rowIndex, columnIndex];
+                }
+            }
+
+            return dataTable.DefaultView;
         }
 
         private ICommand addConceptCommand;
@@ -40,7 +68,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <param name="obj"> Параметр. </param>
         private void AddConcept(object obj)
         {
-            this.FuzzyCognitiveMap.AddConcept();
+            this.FuzzyCognitiveModel.FuzzyCognitiveMap.AddConcept();
         }
 
         private ICommand deleteConceptCommand;
@@ -58,7 +86,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <param name="obj"> Параметр. </param>
         private void DeleteConcept(object obj)
         {
-            this.FuzzyCognitiveMap.DeleteConcept(obj as Concept);
+            this.FuzzyCognitiveModel.FuzzyCognitiveMap.DeleteConcept(obj as Concept);
         }
 
         private ICommand modellCommand;
@@ -76,7 +104,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <param name="obj"> Параметр. </param>
         private void StartModeling(object obj)
         {
-            this.FuzzyCognitiveMap.StartModeling(10);
+            this.FuzzyCognitiveModel.StartDynamicModeling(10);
         }
 
         /// <summary>
@@ -84,7 +112,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// </summary>
         public FuzzyCognitiveMapViewModel()
         {
-            FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+            FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
         }
 
         private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -92,7 +120,7 @@ namespace FuzzyCognitiveModel.ViewModels
             // TODO: оптимизировать через посылку события о кокретном удаленном/добавленном концепте.
             this.Concepts.Clear();
 
-            foreach (var concept in FuzzyCognitiveMap.Concepts)
+            foreach (var concept in FuzzyCognitiveModel.FuzzyCognitiveMap.Concepts)
             {
                 this.Concepts.Add(concept);
             }

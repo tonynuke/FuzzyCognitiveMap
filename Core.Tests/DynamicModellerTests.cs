@@ -1,3 +1,5 @@
+using Core.Modeling;
+
 namespace Core.Tests
 {
     using MathNet.Numerics.LinearAlgebra;
@@ -21,7 +23,7 @@ namespace Core.Tests
                 { 0.4, 0 }
             });
 
-            var dynamicModeling = new DynamicModeller();
+            var dynamicModeling = new DynamicModel();
             var m = dynamicModeling.CalculateNextState(vector, matrix);
 
             Assert.IsNotNull(m);

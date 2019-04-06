@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -38,7 +39,6 @@ namespace FuzzyCognitiveModel.Views
         public GraphControl()
         {
             InitializeComponent();
-            //this.CreateGraphToVisualize();
         }
 
         public void CreateGraphToVisualize()
@@ -60,9 +60,9 @@ namespace FuzzyCognitiveModel.Views
                 g.AddVertex(vertices[i]);
             }
 
-            foreach (var conceptsLink in model.FuzzyCognitiveMap.ConceptsLinks)
+            foreach (var conceptsLink in model.FuzzyCognitiveModel.FuzzyCognitiveMap.ConceptsLinks)
             {
-                var edge = new LinkEdge(conceptsLink.From.Name, conceptsLink.To.Name);
+                var edge = new LinkEdge(conceptsLink.From.Name, conceptsLink.To.Name, conceptsLink.Value.ToString(CultureInfo.InvariantCulture));
                 if (conceptsLink.Value > 0)
                 {
                     edge.EdgeColor = Colors.GreenYellow;
