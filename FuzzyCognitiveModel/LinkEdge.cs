@@ -8,7 +8,7 @@ namespace FuzzyCognitiveModel
     /// <summary>
     /// Ребро связи.
     /// </summary>
-    public class LinkEdge : TaggedEdge<object, string>
+    public class LinkEdge : Edge<object>
     {
         /// <summary>
         /// Цвет связи.
@@ -20,9 +20,8 @@ namespace FuzzyCognitiveModel
         /// </summary>
         /// <param name="source"></param>
         /// <param name="target"></param>
-        public LinkEdge(object source, object target, string tag) : base(source, target, tag)
+        public LinkEdge(object source, object target) : base(source, target)
         {
-            this.Tag = "asd";
         }
     }
 }

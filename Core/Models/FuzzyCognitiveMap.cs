@@ -69,31 +69,6 @@
         public Matrix<double> FuzzyCognitiveMatrix => this.fuzzyCognitiveMatrix;
 
         /// <summary>
-        /// Матрица.
-        /// </summary>
-        public List<List<double>> Matrix
-        {
-            get
-            {
-                List<List<double>> matrix = new List<List<double>>();
-                var rowsCount = this.fuzzyCognitiveMatrix?.RowCount;
-                var columnsCount = this.fuzzyCognitiveMatrix?.ColumnCount;
-
-                for (int row = 0; row < rowsCount; row++)
-                {
-                    matrix.Add(new List<double>());
-
-                    for (int column = 0; column < columnsCount; column++)
-                    {
-                        matrix[row].Add(this.fuzzyCognitiveMatrix[row, column]);
-                    }
-                }
-
-                return matrix;
-            }
-        }
-
-        /// <summary>
         /// Установить значение связи через НКМ.
         /// </summary>
         /// <param name="row"> Строка. </param>

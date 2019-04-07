@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using FuzzyCognitiveModel.ViewModels;
 
@@ -14,6 +15,36 @@ namespace FuzzyCognitiveModel.Views
         public StaticModelControl()
         {
             InitializeComponent();
+
+            this.Consonance.LoadingRow += this.Matrix_OnLoadingRow;
+            this.Dissonance.LoadingRow += this.Matrix_OnLoadingRow;
+            this.Influence.LoadingRow += this.Matrix_OnLoadingRow;
+
+            this.Consonance.Loaded += this.MatrixOnLoaded;
+            this.Dissonance.Loaded += this.MatrixOnLoaded;
+            this.Influence.Loaded += this.MatrixOnLoaded;
+
+            this.UpdateHeaders(this.Consonance);
+            this.UpdateHeaders(this.Dissonance);
+            this.UpdateHeaders(this.Influence);
+        }
+
+        private void MatrixOnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            this.UpdateHeaders(sender as DataGrid);
+        }
+
+        private void UpdateHeaders(DataGrid dataGrid)
+        {
+            for (int i = 0; i < dataGrid.Columns.Count; i++)
+            {
+                dataGrid.Columns[i].Header = this.context.Concepts[i].Name;
+            }
+        }
+
+        private void Matrix_OnLoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = this.context.Concepts[e.Row.GetIndex()].Name;
         }
 
         private void StaticModellerControl_OnLoaded(object sender, RoutedEventArgs e)

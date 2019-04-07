@@ -8,6 +8,17 @@
              mc:Ignorable="d"
              Loaded="StaticModellerControl_OnLoaded"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGrid}">
+            <Style.Setters>
+                <Setter Property="CanUserAddRows" Value="False"></Setter>
+                <Setter Property="CanUserDeleteRows" Value="False"></Setter>
+                <Setter Property="CanUserReorderColumns" Value="False"></Setter>
+                <Setter Property="CanUserSortColumns" Value="False"></Setter>
+                <Setter Property="HeadersVisibility" Value="All"></Setter>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
     <TabControl HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="790">
         <TabItem Header="Итоги">
             <Grid>
@@ -20,8 +31,7 @@
         <TabItem Header="Консонанс">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*">
-                    </ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Column="0" x:Name="Consonance" ItemsSource="{Binding Consonance}" />
@@ -31,8 +41,7 @@
         <TabItem Header="Диссонанс">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*">
-                    </ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Column="0" x:Name="Dissonance" ItemsSource="{Binding Dissonance}" />
@@ -42,8 +51,7 @@
         <TabItem Header="Воздействие">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*">
-                    </ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <DataGrid Grid.Column="0" x:Name="Influence" ItemsSource="{Binding Influence}" />

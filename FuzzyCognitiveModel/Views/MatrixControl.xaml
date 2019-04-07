@@ -9,7 +9,24 @@
              Unloaded="MatrixControl_OnUnloaded"
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <Style TargetType="DataGridRowHeader">
+            <Setter Property="Content" Value="{Binding ColumnName}"></Setter>
+        </Style>
+    </UserControl.Resources>
 
-    <DataGrid Name="Matrix" ItemsSource="{Binding DataView}" PreviewKeyDown="Matrix_OnPreviewKeyDown" CellEditEnding="Matrix_OnCellEditEnding">
+    <DataGrid Name="Matrix" 
+              ItemsSource="{Binding DataView}"
+              HeadersVisibility="All"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              CanUserReorderColumns="False"
+              CanUserSortColumns="False"
+              SelectionMode="Single"
+
+              PreviewKeyDown="Matrix_OnPreviewKeyDown" 
+              CellEditEnding="Matrix_OnCellEditEnding"
+              LoadingRow="Matrix_OnLoadingRow">
     </DataGrid>
 </UserControl>

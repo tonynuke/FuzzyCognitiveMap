@@ -19,7 +19,7 @@
                 <ToolTip x:Key="ToolTipContent">
                     <StackPanel>
                         <TextBlock FontWeight="Bold" Text="Edge.ID"/>
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource Self}, Path=Edge.Tag, Converter={StaticResource edgeToEdgeColorConverter}}"/>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource Self}, Path=Tag}"/>
                     </StackPanel>
                 </ToolTip>
             </Style.Resources>
@@ -29,6 +29,7 @@
                         Value="{Binding RelativeSource={RelativeSource Self}, Path=Edge.EdgeColor, Converter={StaticResource edgeToEdgeColorConverter}}"/>
             </Style.Setters>
         </Style>
+
     </UserControl.Resources>
 
     <Grid>

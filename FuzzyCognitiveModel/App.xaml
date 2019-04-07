@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:FuzzyCognitiveModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <JournalEntryUnifiedViewConverter x:Key="routeToPathConverter" />
     </Application.Resources>
 </Application>

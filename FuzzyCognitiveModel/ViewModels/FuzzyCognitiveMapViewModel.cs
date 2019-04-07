@@ -36,6 +36,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <summary>
         /// Преобразовать в таблицу данных.
         /// </summary>
+        /// <param name="matrix"> Матрица. </param>
         public DataView ToDataView(Matrix<double> matrix)
         {
             var rowsCount = matrix?.RowCount;
@@ -64,6 +65,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <summary>
         /// Преобразовать в таблицу данных.
         /// </summary>
+        /// <param name="vector"> Вектор. </param>
         public DataView ToDataView(Vector<double> vector)
         {
             var rowsCount = vector?.Count;

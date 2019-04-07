@@ -45,7 +45,6 @@ namespace FuzzyCognitiveModel.Views
         {
             var g = new BidirectionalGraph<object, IEdge<object>>();
 
-
             if (!(this.DataContext is FuzzyCognitiveMapViewModel model))
             {
                 _graphToVisualize = g;
@@ -68,7 +67,7 @@ namespace FuzzyCognitiveModel.Views
 
             foreach (var conceptsLink in model.FuzzyCognitiveModel.FuzzyCognitiveMap.ConceptsLinks)
             {
-                var edge = new LinkEdge(conceptsLink.From.Name, conceptsLink.To.Name, conceptsLink.Value.ToString(CultureInfo.InvariantCulture));
+                var edge = new LinkEdge(conceptsLink.From.Name, conceptsLink.To.Name);
                 if (conceptsLink.Value > 0)
                 {
                     edge.EdgeColor = Colors.GreenYellow;
@@ -78,6 +77,7 @@ namespace FuzzyCognitiveModel.Views
                     edge.EdgeColor = Colors.Red;
                 }
                 g.AddEdge(edge);
+                //g.AddEdge(new TaggedEdge<object, string>(conceptsLink.From.Name, conceptsLink.To.Name, "asdasd"));
             }
 
             GraphToVisualize = g;
