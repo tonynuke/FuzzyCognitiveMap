@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -94,13 +95,28 @@ namespace FuzzyCognitiveModel.Views
         private void DynamicModellingControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             this.context = this.DataContext as FuzzyCognitiveMapViewModel;
-            this.SeriesCollection.Clear();
-
             if (this.context == null)
             {
                 return;
             }
 
+            this.UpdateChart();
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void DynamicModelControl_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged -= FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            this.UpdateChart();
+        }
+
+        private void UpdateChart()
+        {
+            this.SeriesCollection.Clear();
             foreach (var concept in this.context.Concepts)
             {
                 var series = new LineSeries

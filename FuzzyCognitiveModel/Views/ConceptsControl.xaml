@@ -12,54 +12,58 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <ObjectDataProvider x:Key="ConceptTypeEnum" MethodName="GetValues"
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/ResourcesDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <ObjectDataProvider x:Key="ConceptTypeEnum" MethodName="GetValues"
         ObjectType="{x:Type system:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="fuzzyCognitiveMap:ConceptType"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="fuzzyCognitiveMap:ConceptType"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
 
-        <Style x:Key="Header" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-        </Style>
+            <Style x:Key="AddConceptButton" TargetType="Button">
+                <Setter Property="Height" Value="Auto"/>
+                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                <Setter Property="Content" Value="+"/>
+                <Setter Property="Background" Value="LightGreen"/>
+            </Style>
 
-        <Style x:Key="AddConceptButton" TargetType="Button">
-            <Setter Property="Height" Value="Auto"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Content" Value="+"/>
-            <Setter Property="Background" Value="LightGreen"/>
-        </Style>
+            <Style x:Key="RemoveConceptButton" TargetType="Button">
+                <Setter Property="Content" Value="X"/>
+                <Setter Property="Background" Value="LightCoral"/>
+            </Style>
 
-        <Style x:Key="RemoveConceptButton" TargetType="Button">
-            <Setter Property="Content" Value="X"/>
-            <Setter Property="Background" Value="LightCoral"/>
-        </Style>
-
-        <DataTemplate x:Key="ConceptTemplate" DataType="{x:Type fuzzyCognitiveMap:Concept}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="Type" Width="Auto"/>
-                    <ColumnDefinition SharedSizeGroup="Value" Width="Auto"/>
-                    <ColumnDefinition SharedSizeGroup="Description" Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" 
-                          Text="{Binding Path=Name}"/>
-                <ComboBox Grid.Column="1"
+            <DataTemplate x:Key="ConceptTemplate" DataType="{x:Type fuzzyCognitiveMap:Concept}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
+                        <ColumnDefinition SharedSizeGroup="Description" Width="Auto"/>
+                        <ColumnDefinition SharedSizeGroup="Type" Width="Auto"/>
+                        <ColumnDefinition SharedSizeGroup="Value" Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0"
+                             IsReadOnly="True"
+                             Text="{Binding Path=Name}"/>
+                    <TextBox Grid.Column="1" 
+                             Text="{Binding Path=Description}"/>
+                    <ComboBox Grid.Column="2"
                           Text="{Binding Path=Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={views:EnumDisplayNameConverter}}" 
                           ItemsSource="{Binding Source={StaticResource ConceptTypeEnum}}"
                           SelectedItem="{Binding Type}"/>
-                <TextBox Grid.Column="2" 
-                           Text="{Binding Path=Value}"/>
-                <TextBox Grid.Column="3" 
-                         Text="{Binding Path=Description}"/>
-                <Button Grid.Column="4" 
+                    <TextBox Grid.Column="3"
+                             Text="{Binding Path=Value}"/>
+                    <Button Grid.Column="4" 
                         Style="{StaticResource RemoveConceptButton}"
                         Command="{Binding DataContext.DeleteConceptCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" 
                         CommandParameter="{Binding}"/>
-            </Grid>
-        </DataTemplate>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+
     </UserControl.Resources>
 
     <Grid IsSharedSizeScope="True">
@@ -71,15 +75,15 @@
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition SharedSizeGroup="Name"/>
+                <ColumnDefinition SharedSizeGroup="Description"/>
                 <ColumnDefinition SharedSizeGroup="Type"/>
                 <ColumnDefinition SharedSizeGroup="Value"/>
-                <ColumnDefinition SharedSizeGroup="Description"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Style="{StaticResource Header}" Grid.Column="0" Text="Название"/>
-            <TextBlock Style="{StaticResource Header}" Grid.Column="1" Text="Тип"/>
-            <TextBlock Style="{StaticResource Header}" Grid.Column="2" Text="Значение"/>
-            <TextBlock Style="{StaticResource Header}" Grid.Column="3" Text="Описание"/>
+            <TextBlock Style="{StaticResource Header}" Grid.Column="0" Text="№" />
+            <TextBlock Style="{StaticResource Header}" Grid.Column="1" Text="Описание"/>
+            <TextBlock Style="{StaticResource Header}" Grid.Column="2" Text="Тип"/>
+            <TextBlock Style="{StaticResource Header}" Grid.Column="3" Text="Значение"/>
         </Grid>
 
         <ScrollViewer Grid.Row="1">

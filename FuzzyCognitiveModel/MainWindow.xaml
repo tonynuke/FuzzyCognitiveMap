@@ -7,6 +7,25 @@
         mc:Ignorable="d"
         Title="Fuzzy cognitive map" Height="450" Width="800">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/ResourcesDictionary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="GroupBox">
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="Матрица влияний" Style="{StaticResource Header}"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
     <Grid>
         <Menu Height="25" VerticalAlignment="Top">
             <Button Content="Выход" Width="75"/>
@@ -19,7 +38,9 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <views:ConceptsControl Grid.Column="0" DataContext="{Binding FuzzyCognitiveViewModel}"/>
-                    <views:MatrixControl Grid.Column="1" x:Name="MatrixControl" DataContext="{Binding FuzzyCognitiveViewModel}"/>
+                    <GroupBox Grid.Column="1">
+                        <views:MatrixControl Grid.Column="1" x:Name="MatrixControl" DataContext="{Binding FuzzyCognitiveViewModel}"/>
+                    </GroupBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Граф">

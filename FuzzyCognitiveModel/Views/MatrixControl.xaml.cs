@@ -1,11 +1,8 @@
 ﻿using System.ComponentModel;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using FuzzyCognitiveModel.ViewModels;
-using Microsoft.Windows.Controls.Primitives;
 
 namespace FuzzyCognitiveModel.Views
 {
@@ -21,20 +18,11 @@ namespace FuzzyCognitiveModel.Views
             this.InitializeComponent();
         }
 
-        private void UpdateHeaders()
-        {
-            for (int i = 0; i < this.Matrix.Columns.Count; i++)
-            {
-                this.Matrix.Columns[i].Header = this.context.Concepts[i].Name;
-            }
-        }
-
         private void MatrixControl_OnLoaded(object sender, RoutedEventArgs e)
         {
             if (this.context != null)
             {
-                this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged +=
-                    FuzzyCognitiveMapOnPropertyChanged;
+                this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
                 this.UpdateHeaders();
             }
         }
@@ -73,6 +61,14 @@ namespace FuzzyCognitiveModel.Views
         private void Matrix_OnLoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = this.context.Concepts[e.Row.GetIndex()].Name;
+        }
+
+        private void UpdateHeaders()
+        {
+            for (int i = 0; i < this.Matrix.Columns.Count; i++)
+            {
+                this.Matrix.Columns[i].Header = this.context.Concepts[i].Name;
+            }
         }
     }
 }

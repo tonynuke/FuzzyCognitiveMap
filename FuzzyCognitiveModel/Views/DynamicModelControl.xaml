@@ -5,47 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewModels="clr-namespace:FuzzyCognitiveModel.ViewModels"
              xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:fuzzyCognitiveMap="clr-namespace:Core.Concept;assembly=Core"
              xmlns:views="clr-namespace:FuzzyCognitiveModel.Views"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              Loaded="DynamicModellingControl_OnLoaded"
+             Unloaded="DynamicModelControl_OnUnloaded"
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <ObjectDataProvider x:Key="ConceptTypeEnum" MethodName="GetValues"
-                            ObjectType="{x:Type system:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="fuzzyCognitiveMap:ConceptType"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-
-        <DataTemplate x:Key="ConceptTemplate" DataType="{x:Type fuzzyCognitiveMap:Concept}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
-                    <ColumnDefinition SharedSizeGroup="Type" Width="Auto"/>
-                    <ColumnDefinition SharedSizeGroup="Value" Width="Auto"/>
-                    <ColumnDefinition SharedSizeGroup="Description" Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" 
-                          Text="{Binding Path=Name}"/>
-                <ComboBox Grid.Column="1"
-                          Text="{Binding Path=Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={views:EnumDisplayNameConverter}}" 
-                          ItemsSource="{Binding Source={StaticResource ConceptTypeEnum}}"
-                          SelectedItem="{Binding Type}"/>
-                <TextBox Grid.Column="2" 
-                           Text="{Binding Path=Value}"/>
-                <TextBox Grid.Column="3" 
-                         Text="{Binding Path=Description}"/>
-            </Grid>
-        </DataTemplate>
-    </UserControl.Resources>
-
     <Grid IsSharedSizeScope="True">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
@@ -53,33 +21,12 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Row="0" Column="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition SharedSizeGroup="Name"/>
-                <ColumnDefinition SharedSizeGroup="Type"/>
-                <ColumnDefinition SharedSizeGroup="Value"/>
-                <ColumnDefinition SharedSizeGroup="Description"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0" Text="Название"/>
-            <TextBlock Grid.Column="1" Text="Тип"/>
-            <TextBlock Grid.Column="2" Text="Значение"/>
-            <TextBlock Grid.Column="3" Text="Описание"/>
-        </Grid>
 
-        <ScrollViewer Grid.Row="1" Grid.Column="0">
-            <ItemsControl x:Name="Concepts"
-                          ItemsSource="{Binding Concepts, Mode=OneWay}" ItemTemplate="{StaticResource ConceptTemplate}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </ScrollViewer>
+        <views:ConceptsControl Grid.Row="0" Grid.Column="0"/>
 
-        <Button Grid.Row="2" Grid.Column="0" Height="Auto" HorizontalAlignment="Stretch" Content="Моделировать" Click="ButtonBase_OnClick"/>
+        <Button Grid.Row="1" Grid.Column="0" Height="Auto" HorizontalAlignment="Stretch" Content="Моделировать" Click="ButtonBase_OnClick"/>
 
-        <wpf:CartesianChart Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Name="Chart" Series="{Binding SeriesCollection}" LegendLocation="Right" >
+        <wpf:CartesianChart Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Name="Chart" Series="{Binding SeriesCollection}" LegendLocation="Right" >
             <wpf:CartesianChart.AxisY>
                 <wpf:Axis Title="Значение" LabelFormatter="{Binding YFormatter}"></wpf:Axis>
             </wpf:CartesianChart.AxisY>
