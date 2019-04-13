@@ -42,7 +42,8 @@ namespace FuzzyCognitiveModel
 
             foreach (var link in map.ConceptsLinks)
             {
-                var edge = new TaggedEdge<string, string>(link.From.Name, link.To.Name, link.Value.ToString(CultureInfo.InvariantCulture));
+                var edge = new TaggedEdge<string, string>(link.From.Name, link.To.Name,
+                    link.Value.ToString(CultureInfo.InvariantCulture));
                 g.AddEdge(edge);
             }
 
@@ -120,6 +121,8 @@ namespace FuzzyCognitiveModel
                     {
                         FileName = @"D:\магистратура\Core\FuzzyCognitiveModel\lib\graphviz\dot.exe",
                         Arguments = $@"dot -T png {dotPath} -o {imagePath}",
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
                     };
 
                 Process.Start(startInfo)?.WaitForExit(1000);
