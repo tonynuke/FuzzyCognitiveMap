@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using FuzzyCognitiveModel.Properties;
 using QuickGraph;
 using QuickGraph.Graphviz;
 using QuickGraph.Graphviz.Dot;
@@ -69,7 +70,6 @@ namespace FuzzyCognitiveModel
         private static void FormatEdge(object sender, FormatEdgeEventArgs<string, TaggedEdge<string, string>> e)
         {
             e.EdgeFormatter.Head.Label = e.Edge.Tag;
-            e.EdgeFormatter.Tail.Label = e.Edge.Source;
 
             e.EdgeFormatter.Font = new GraphvizFont(System.Drawing.FontFamily.GenericMonospace.Name, 12);
             e.EdgeFormatter.FontGraphvizColor = GraphvizColor.Black;
@@ -119,7 +119,7 @@ namespace FuzzyCognitiveModel
                 ProcessStartInfo startInfo =
                     new ProcessStartInfo
                     {
-                        FileName = @"D:\магистратура\Core\FuzzyCognitiveModel\lib\graphviz\dot.exe",
+                        FileName = Settings.Default.GraphvizDotPath,
                         Arguments = $@"dot -T png {dotPath} -o {imagePath}",
                         UseShellExecute = false,
                         CreateNoWindow = true,

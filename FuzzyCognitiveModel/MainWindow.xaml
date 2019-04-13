@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:FuzzyCognitiveModel.Views"
         mc:Ignorable="d"
-        Title="Fuzzy cognitive map" Height="450" Width="800">
+        Title="Fuzzy cognitive map" Height="472" Width="860">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -13,11 +13,21 @@
                 <ResourceDictionary Source="Resources/ResourcesDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="GroupBox">
+            <Style TargetType="GroupBox" x:Key="Influence">
                 <Setter Property="HeaderTemplate">
                     <Setter.Value>
                         <DataTemplate>
                             <TextBlock Text="Матрица влияний" Style="{StaticResource Header}"/>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="GroupBox" x:Key="Graph">
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="Граф" Style="{StaticResource Header}"/>
                         </DataTemplate>
                     </Setter.Value>
                 </Setter>
@@ -36,10 +46,14 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <views:ConceptsControl Grid.Column="0" DataContext="{Binding FuzzyCognitiveViewModel}"/>
-                    <GroupBox Grid.Column="1">
-                        <views:MatrixControl Grid.Column="1" x:Name="MatrixControl" DataContext="{Binding FuzzyCognitiveViewModel}"/>
+                    <GroupBox Grid.Column="1" Style="{StaticResource Influence}">
+                        <views:MatrixControl x:Name="MatrixControl" DataContext="{Binding FuzzyCognitiveViewModel}"/>
+                    </GroupBox>
+                    <GroupBox Grid.Column="2" Style="{StaticResource Graph}">
+                        <views:GraphControl DataContext="{Binding FuzzyCognitiveViewModel}"/>
                     </GroupBox>
                 </Grid>
             </TabItem>

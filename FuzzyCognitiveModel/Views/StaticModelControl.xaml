@@ -19,7 +19,7 @@
             </Style.Setters>
         </Style>
     </UserControl.Resources>
-    <TabControl HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="790">
+    <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TabItem Header="Итоги">
             <Grid>
                 <Label Content="Вероятность возникновения неблагоприятного события" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>

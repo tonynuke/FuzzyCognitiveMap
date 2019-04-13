@@ -16,7 +16,7 @@ namespace FuzzyCognitiveModel.Views
     {
         private const int Steps = 10;
 
-        private FuzzyCognitiveMapViewModel context;
+        private FuzzyCognitiveMapViewModel context => (FuzzyCognitiveMapViewModel)this.DataContext;
 
         public SeriesCollection SeriesCollection { get; set; } = new SeriesCollection();
         public string[] Labels { get; set; }
@@ -94,7 +94,6 @@ namespace FuzzyCognitiveModel.Views
 
         private void DynamicModellingControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.context = this.DataContext as FuzzyCognitiveMapViewModel;
             if (this.context == null)
             {
                 return;

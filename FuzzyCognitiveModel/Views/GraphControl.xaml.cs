@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
@@ -23,9 +24,26 @@ namespace FuzzyCognitiveModel.Views
 
         private void GraphControl_OnLoaded(object sender, RoutedEventArgs e)
         {
+            if(this.context == null)
+                return;
+
             var map = this.context.FuzzyCognitiveModel.FuzzyCognitiveMap;
             var imagePath = this.GraphAdapter.GenerateGraphImage(map);
+            Uri uri = new Uri(imagePath);
+            this.Graph.Source = BitmapFromUri(uri);
 
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged += FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void GraphControl_OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged -= FuzzyCognitiveMapOnPropertyChanged;
+        }
+
+        private void FuzzyCognitiveMapOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            var map = this.context.FuzzyCognitiveModel.FuzzyCognitiveMap;
+            var imagePath = this.GraphAdapter.GenerateGraphImage(map);
             Uri uri = new Uri(imagePath);
             this.Graph.Source = BitmapFromUri(uri);
         }

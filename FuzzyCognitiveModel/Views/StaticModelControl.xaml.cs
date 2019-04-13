@@ -10,7 +10,7 @@ namespace FuzzyCognitiveModel.Views
     /// </summary>
     public partial class StaticModelControl : UserControl
     {
-        private FuzzyCognitiveMapViewModel context;
+        private FuzzyCognitiveMapViewModel context => (FuzzyCognitiveMapViewModel)this.DataContext;
 
         public StaticModelControl()
         {
@@ -23,10 +23,6 @@ namespace FuzzyCognitiveModel.Views
             this.Consonance.Loaded += this.MatrixOnLoaded;
             this.Dissonance.Loaded += this.MatrixOnLoaded;
             this.Influence.Loaded += this.MatrixOnLoaded;
-
-            this.UpdateHeaders(this.Consonance);
-            this.UpdateHeaders(this.Dissonance);
-            this.UpdateHeaders(this.Influence);
         }
 
         private void MatrixOnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -36,7 +32,9 @@ namespace FuzzyCognitiveModel.Views
 
         private void UpdateHeaders(DataGrid dataGrid)
         {
-            for (int i = 0; i < dataGrid.Columns.Count; i++)
+            var iterationsCount = Math.Min(this.context.Concepts.Count, dataGrid.Columns.Count);
+
+            for (int i = 0; i < iterationsCount; i++)
             {
                 dataGrid.Columns[i].Header = this.context.Concepts[i].Name;
             }
@@ -49,7 +47,9 @@ namespace FuzzyCognitiveModel.Views
 
         private void StaticModellerControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.context = this.DataContext as FuzzyCognitiveMapViewModel;
+            if(context == null)
+                return;
+
             var model = this.context;
             if (model != null)
             {

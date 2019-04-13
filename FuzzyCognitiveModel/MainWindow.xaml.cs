@@ -23,44 +23,44 @@ namespace FuzzyCognitiveModel
             {
                 new Concept {
                     Description = "выход из строя сервера",
-                    Type = ConceptType.Resource,
+                    Type = ConceptType.Ресурс,
                     Value = 20900
                 },
                 new Concept {
                     Description = "нар. цел магистр.",
-                    Type = ConceptType.Resource,
+                    Type = ConceptType.Ресурс,
                     Value = 2200
                 },
                 new Concept {
                     Description = "утечка информации",
-                    Type = ConceptType.Resource,
+                    Type = ConceptType.Ресурс,
                     Value = 10000
                 },
 
                 new Concept {
                     Description = "отсут тех обсл",
-                    Type = ConceptType.Vulnerability,
+                    Type = ConceptType.Уязвимость,
                     Value = 0.12
                 },
                 new Concept {
                     Description = "отсут инстр",
-                    Type = ConceptType.Vulnerability,
+                    Type = ConceptType.Уязвимость,
                     Value = 0.15
                 },
                 new Concept {
                     Description = "ошибки в проект",
-                    Type = ConceptType.Vulnerability,
+                    Type = ConceptType.Уязвимость,
                     Value = 0.29
                 },
 
                 new Concept {
                     Description = "отказ работы сайта",
-                    Type = ConceptType.Threat,
+                    Type = ConceptType.Угроза,
                     Value = 0.09
                 },
                 new Concept {
                     Description = "порча информации",
-                    Type = ConceptType.Threat,
+                    Type = ConceptType.Угроза,
                     Value = 0.12
                 },
             };

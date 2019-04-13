@@ -11,18 +11,18 @@
         /// Ресурс.
         /// </summary>
         [Display(Name = "Ресурс")]
-        Resource,
+        Ресурс,
 
         /// <summary>
         /// Уязвимость.
         /// </summary>
         [Display(Name = "Уязвимость")]
-        Vulnerability,
+        Уязвимость,
 
         /// <summary>
         /// Угроза.
         /// </summary>
         [Display(Name = "Угроза")]
-        Threat
+        Угроза
     }
 }
