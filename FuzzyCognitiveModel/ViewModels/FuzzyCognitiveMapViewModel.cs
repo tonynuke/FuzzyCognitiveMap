@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Windows.Input;
@@ -19,10 +20,16 @@ namespace FuzzyCognitiveModel.ViewModels
         /// </summary>
         public ObservableCollection<Concept> Concepts { get; set; } = new ObservableCollection<Concept>();
 
+        /// <summary>
+        /// Консонанс.
+        /// </summary>
         public DataView Consonance => this.ToDataView(this.FuzzyCognitiveModel.Consonance);
 
         public DataView ConsonanceInfluence => this.ToDataView(this.FuzzyCognitiveModel.ConsonanceInfluence);
 
+        /// <summary>
+        /// Диссонанс.
+        /// </summary>
         public DataView Dissonance => this.ToDataView(this.FuzzyCognitiveModel.Dissonance);
 
         public DataView DissonanceInfluence => this.ToDataView(this.FuzzyCognitiveModel.DissonanceInfluence);
@@ -127,14 +134,14 @@ namespace FuzzyCognitiveModel.ViewModels
             this.FuzzyCognitiveModel.FuzzyCognitiveMap.DeleteConcept(obj as Concept);
         }
 
-        private ICommand modellCommand;
+        private ICommand modelCommand;
 
         /// <summary>
         /// Команда моделирования.
         /// </summary>
         public ICommand ModellCommand =>
-            this.modellCommand ?? (
-                this.modellCommand = new DelegateCommand(this.StartModeling));
+            this.modelCommand ?? (
+                this.modelCommand = new DelegateCommand(this.StartModeling));
 
         /// <summary>
         /// Запустить динамическое моделирование.

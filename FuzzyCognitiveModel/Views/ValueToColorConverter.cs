@@ -5,6 +5,9 @@ using System.Windows.Media;
 
 namespace FuzzyCognitiveModel.Views
 {
+    /// <summary>
+    /// Конвертер значения в цвет.
+    /// </summary>
     public class ValueToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

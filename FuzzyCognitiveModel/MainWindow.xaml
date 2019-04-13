@@ -52,12 +52,6 @@
             <TabItem Header="Динамическое моделирование">
                 <views:DynamicModelControl DataContext="{Binding FuzzyCognitiveViewModel}"/>
             </TabItem>
-            <TabItem Header="Холст">
-                <views:GraphCanvasControl/>
-            </TabItem>
-            <TabItem Header="Холст1">
-                <views:XGraphControl/>
-            </TabItem>
         </TabControl>
     </Grid>
 </Window>

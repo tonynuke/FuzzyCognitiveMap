@@ -3,41 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:controls="clr-namespace:WPFExtensions.Controls;assembly=WPFExtensions"
-             xmlns:controls1="clr-namespace:GraphSharp.Controls;assembly=GraphSharp.Controls"
-             xmlns:fuzzyCognitiveModel="clr-namespace:FuzzyCognitiveModel"
              xmlns:viewModels="clr-namespace:FuzzyCognitiveModel.ViewModels"
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" 
              Loaded="GraphControl_OnLoaded"
-             d:DesignHeight="450" d:DesignWidth="800"
-             x:Name="root">
-    <UserControl.Resources>
-        <fuzzyCognitiveModel:EdgeColorConverter x:Key="edgeToEdgeColorConverter"/>
-        <Style TargetType="{x:Type controls1:EdgeControl}">
-            <Style.Resources>
-                <ToolTip x:Key="ToolTipContent">
-                    <StackPanel>
-                        <TextBlock FontWeight="Bold" Text="Edge.ID"/>
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource Self}, Path=Tag}"/>
-                    </StackPanel>
-                </ToolTip>
-            </Style.Resources>
-            <Style.Setters>
-                <Setter Property="ToolTip" Value="{StaticResource ToolTipContent}"/>
-                <Setter Property="Foreground" 
-                        Value="{Binding RelativeSource={RelativeSource Self}, Path=Edge.EdgeColor, Converter={StaticResource edgeToEdgeColorConverter}}"/>
-            </Style.Setters>
-        </Style>
+             d:DesignHeight="450" d:DesignWidth="800">
 
-    </UserControl.Resources>
-
-    <Grid>
-        <controls:ZoomControl>
-            <controls1:GraphLayout x:Name="graphLayout"
-                               Graph="{Binding ElementName=root, Path=GraphToVisualize}"
-                               LayoutAlgorithmType="FR" OverlapRemovalAlgorithmType="FSA"
-                               HighlightAlgorithmType="Simple" />
-        </controls:ZoomControl>
-    </Grid>
+    <Image x:Name="Graph"/>
 </UserControl>
