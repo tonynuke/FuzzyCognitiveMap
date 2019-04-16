@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,6 +13,8 @@ namespace FuzzyCognitiveModel.Views
     public partial class MatrixControl : UserControl
     {
         private FuzzyCognitiveMapViewModel context => (FuzzyCognitiveMapViewModel)this.DataContext;
+
+        private Regex doubleRegex = new Regex(@"[-]{0,1}(?:0|[1-9][0-9]*)[\,|\.]{0,1}[0-9]*");
 
         public MatrixControl()
         {
@@ -40,9 +43,17 @@ namespace FuzzyCognitiveModel.Views
 
         private void Matrix_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
+            var enteredText = ((TextBox)e.EditingElement).Text;
+            if (!this.doubleRegex.IsMatch(enteredText))
+            {
+                ((TextBox) e.EditingElement).Text = "0";
+                return;
+            }
+
+            enteredText = enteredText.Replace('.', ',');
+
             var row = e.Row.GetIndex();
             var column = e.Column.DisplayIndex;
-            var enteredText = ((TextBox) e.EditingElement).Text;
             double.TryParse(enteredText, out var value);
 
             this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.SetLinkViaMatrix(row, column, value);

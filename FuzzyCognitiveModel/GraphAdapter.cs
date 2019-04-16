@@ -18,7 +18,9 @@ namespace FuzzyCognitiveModel
         /// <summary>
         /// Название графа.
         /// </summary>
-        private string GraphName = "graph";
+        private const string GraphName = "graph";
+
+        private const string ImagesPath = "images";
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -112,7 +114,15 @@ namespace FuzzyCognitiveModel
                 index++;
 
                 imageFileName = $"{fileName}{index}.png";
-                imagePath = Path.Combine(currentDirectory, imageFileName);
+                string imagesDirectoryPath = Path.Combine(currentDirectory, ImagesPath);
+
+                if (Directory.Exists(imagesDirectoryPath))
+                {
+                    Directory.Delete(imagesDirectoryPath, true);
+                }
+                Directory.CreateDirectory(imagesDirectoryPath);
+
+                imagePath = Path.Combine(imagesDirectoryPath, imageFileName);
 
                 File.WriteAllText(dotFileName, dot);
 

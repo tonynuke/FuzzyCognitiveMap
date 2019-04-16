@@ -20,6 +20,10 @@ namespace FuzzyCognitiveModel.Views
             this.Dissonance.LoadingRow += this.Matrix_OnLoadingRow;
             this.Influence.LoadingRow += this.Matrix_OnLoadingRow;
 
+            this.ConsonanceInfluence.LoadingRow += this.Matrix_OnLoadingRow;
+            this.DissonanceInfluence.LoadingRow += this.Matrix_OnLoadingRow;
+            this.ConceptInfluence.LoadingRow += this.Matrix_OnLoadingRow;
+
             this.Consonance.Loaded += this.MatrixOnLoaded;
             this.Dissonance.Loaded += this.MatrixOnLoaded;
             this.Influence.Loaded += this.MatrixOnLoaded;
@@ -30,16 +34,6 @@ namespace FuzzyCognitiveModel.Views
             this.UpdateHeaders(sender as DataGrid);
         }
 
-        private void UpdateHeaders(DataGrid dataGrid)
-        {
-            var iterationsCount = Math.Min(this.context.Concepts.Count, dataGrid.Columns.Count);
-
-            for (int i = 0; i < iterationsCount; i++)
-            {
-                dataGrid.Columns[i].Header = this.context.Concepts[i].Name;
-            }
-        }
-
         private void Matrix_OnLoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = this.context.Concepts[e.Row.GetIndex()].Name;
@@ -47,10 +41,7 @@ namespace FuzzyCognitiveModel.Views
 
         private void StaticModellerControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if(context == null)
-                return;
-
-            var model = this.context;
+            var model = context;
             if (model != null)
             {
                 model.FuzzyCognitiveModel.StartStaticicModeling();
@@ -66,6 +57,16 @@ namespace FuzzyCognitiveModel.Views
 
                 this.Probability.Content = model.FuzzyCognitiveModel.Probability;
                 this.Damage.Content = model.FuzzyCognitiveModel.Damage;
+            }
+        }
+
+        private void UpdateHeaders(DataGrid dataGrid)
+        {
+            var iterationsCount = Math.Min(this.context.Concepts.Count, dataGrid.Columns.Count);
+
+            for (int i = 0; i < iterationsCount; i++)
+            {
+                dataGrid.Columns[i].Header = this.context.Concepts[i].Name;
             }
         }
     }

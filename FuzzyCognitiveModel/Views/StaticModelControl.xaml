@@ -16,6 +16,7 @@
                 <Setter Property="CanUserReorderColumns" Value="False"></Setter>
                 <Setter Property="CanUserSortColumns" Value="False"></Setter>
                 <Setter Property="HeadersVisibility" Value="All"></Setter>
+                <Setter Property="IsReadOnly" Value="True"></Setter>
             </Style.Setters>
         </Style>
     </UserControl.Resources>
