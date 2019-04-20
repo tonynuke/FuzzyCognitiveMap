@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using Core.Concept;
 using FuzzyCognitiveModel.ViewModels;
 
 namespace FuzzyCognitiveModel
@@ -19,7 +17,7 @@ namespace FuzzyCognitiveModel
 
             this.DataContext = this;
 
-            var concepts = new List<Concept>()
+            /*var concepts = new List<Concept>()
             {
                 new Concept {
                     Description = "выход из строя сервера",
@@ -109,7 +107,50 @@ namespace FuzzyCognitiveModel
             act(8, 2, -0.12);
             act(8, 3, 1);
             act(8, 6, -0.2);
-            act(8, 7, 0.8);
+            act(8, 7, 0.8);*/
+        }
+
+        private void ExitButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void SaveButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            //dlg.DefaultExt = ".txt"; // Default file extension
+            //dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                this.FuzzyCognitiveViewModel.FuzzyCognitiveModel.FuzzyCognitiveMap.Save(filename);
+            }
+        }
+
+        private void LoadButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            //dlg.DefaultExt = ".txt"; // Default file extension
+            //dlg.Filter = "Text documents (.txt)|*.txt"; // Filter files by extension
+
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                this.FuzzyCognitiveViewModel.FuzzyCognitiveModel.FuzzyCognitiveMap.Load(filename);
+            }
         }
     }
 }

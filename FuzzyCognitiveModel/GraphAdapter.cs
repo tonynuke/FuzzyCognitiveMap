@@ -107,7 +107,7 @@ namespace FuzzyCognitiveModel
                 string dotPath = Path.Combine(currentDirectory, dotFileName);
 
                 string imageFileName = $"{fileName}{index}.png";
-                string imagePath = Path.Combine(currentDirectory, imageFileName);
+                string imagePath = Path.Combine(currentDirectory, ImagesPath, imageFileName);
 
                 File.Delete(imagePath);
 
@@ -115,12 +115,6 @@ namespace FuzzyCognitiveModel
 
                 imageFileName = $"{fileName}{index}.png";
                 string imagesDirectoryPath = Path.Combine(currentDirectory, ImagesPath);
-
-                if (Directory.Exists(imagesDirectoryPath))
-                {
-                    Directory.Delete(imagesDirectoryPath, true);
-                }
-                Directory.CreateDirectory(imagesDirectoryPath);
 
                 imagePath = Path.Combine(imagesDirectoryPath, imageFileName);
 
@@ -138,6 +132,17 @@ namespace FuzzyCognitiveModel
                 Process.Start(startInfo)?.WaitForExit(1000);
                 return imagePath;
             }
+        }
+
+        public GraphAdapter()
+        {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string imagesDirectoryPath = Path.Combine(currentDirectory, ImagesPath);
+            if (Directory.Exists(imagesDirectoryPath))
+            {
+                Directory.Delete(imagesDirectoryPath, true);
+            }
+            Directory.CreateDirectory(imagesDirectoryPath);
         }
     }
 }

@@ -2,11 +2,13 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.IO;
     using System.Linq;
     using System.Runtime.CompilerServices;
     using Concept;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Нечетная когнитивная карта.
@@ -51,7 +53,7 @@
         /// <summary>
         /// Связи между концептами.
         /// </summary>
-        private readonly List<ConceptsLink> conceptsLinks = new List<ConceptsLink>();
+        private List<ConceptsLink> conceptsLinks = new List<ConceptsLink>();
 
         /// <summary>
         /// Связи между концептами.
@@ -172,11 +174,9 @@
         /// <summary>
         /// Добавить новый концепт.
         /// </summary>
-        public void AddConcept(Concept concept)
+        private void AddConcept(Concept concept)
         {
-            concept.Name = $"{DefaultName}{conceptIndex}";
             this.concepts.Add(concept);
-            conceptIndex++;
 
             if (this.concepts.Count == 1)
             {
@@ -255,6 +255,55 @@
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Сохранить модель.
+        /// </summary>
+        /// <param name="fileName"> Название модели. </param>
+        public void Save(string fileName)
+        {
+            var save = new SaveResult
+            {
+                Concepts = this.concepts,
+                ConceptsLinks = this.conceptsLinks
+            };
+
+            using (StreamWriter file = File.CreateText(fileName))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(file, save);
+            }
+        }
+
+        /// <summary>
+        /// Загрузить модель.
+        /// </summary>
+        /// <param name="fileName"> Название модели. </param>
+        public void Load(string fileName)
+        {
+            using (StreamReader r = new StreamReader(fileName))
+            {
+                string json = r.ReadToEnd();
+                var save = JsonConvert.DeserializeObject<SaveResult>(json);
+
+                this.concepts = new List<Concept>();
+                this.conceptsLinks = new List<ConceptsLink>();
+
+                conceptIndex = 1;
+
+                foreach (var concept in save.Concepts)
+                {
+                    this.AddConcept(concept);
+                }
+
+                foreach (var conceptsLink in save.ConceptsLinks)
+                {
+                    var from = this.concepts.Single(c => c.Name == conceptsLink.From.Name);
+                    var to = this.concepts.Single(c => c.Name == conceptsLink.To.Name);
+                    this.SetLinkBetweenConcepts(from, to, conceptsLink.Value);
+                }
+            }
         }
     }
 }

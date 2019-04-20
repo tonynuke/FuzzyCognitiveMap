@@ -1,4 +1,7 @@
-﻿namespace Core.Models
+﻿using System.IO;
+using Newtonsoft.Json;
+
+namespace Core.Models
 {
     using System.Collections.Generic;
     using System.Linq;
