@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="GraphvizDotPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\магистратура\Core\FuzzyCognitiveModel\lib\graphviz\dot.exe</Value>
+      <Value Profile="(Default)">dot.exe</Value>
     </Setting>
   </Settings>
 </SettingsFile>

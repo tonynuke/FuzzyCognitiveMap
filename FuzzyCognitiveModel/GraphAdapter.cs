@@ -104,7 +104,7 @@ namespace FuzzyCognitiveModel
                 string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
                 string dotFileName = $"{fileName}.dot";
-                string dotPath = Path.Combine(currentDirectory, dotFileName);
+                string dotPath = Path.Combine(currentDirectory, ImagesPath, dotFileName);
 
                 string imageFileName = $"{fileName}{index}.png";
                 string imagePath = Path.Combine(currentDirectory, ImagesPath, imageFileName);
@@ -118,12 +118,12 @@ namespace FuzzyCognitiveModel
 
                 imagePath = Path.Combine(imagesDirectoryPath, imageFileName);
 
-                File.WriteAllText(dotFileName, dot);
+                File.WriteAllText(dotPath, dot);
 
                 ProcessStartInfo startInfo =
                     new ProcessStartInfo
                     {
-                        FileName = Settings.Default.GraphvizDotPath,
+                        FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Settings.Default.GraphvizDotPath),
                         Arguments = $@"dot -T png {dotPath} -o {imagePath}",
                         UseShellExecute = false,
                         CreateNoWindow = true,
