@@ -146,10 +146,8 @@
         public Concept AddConcept()
         {
             var defaultName = $"{DefaultName}{conceptIndex}";
-            var newConcept = new Concept
-            {
-                Name = defaultName
-            };
+            var newConcept = new Concept(defaultName);
+
             this.concepts.Add(newConcept);
             conceptIndex++;
 
@@ -191,7 +189,7 @@
                 this.fuzzyCognitiveMatrix = this.fuzzyCognitiveMatrix.InsertColumn(insertIndex, insertingColumn);
             }
 
-            this.OnPropertyChanged(nameof(this.ConceptsLinks));
+            conceptIndex++;
         }
 
         /// <summary>
@@ -224,7 +222,7 @@
         /// <param name="concept"> Концепт. </param>
         private void RemoveConceptLinks(Concept concept)
         {
-            var linksToRemove = this.conceptsLinks.Where(link => link.From == concept || link.To == concept).ToList();
+            var linksToRemove = this.conceptsLinks.Where(link => link.From.Equals(concept) || link.To.Equals(concept)).ToList();
             foreach (var link in linksToRemove)
             {
                 this.conceptsLinks.Remove(link);
@@ -299,10 +297,14 @@
 
                 foreach (var conceptsLink in save.ConceptsLinks)
                 {
-                    var from = this.concepts.Single(c => c.Name == conceptsLink.From.Name);
-                    var to = this.concepts.Single(c => c.Name == conceptsLink.To.Name);
-                    this.SetLinkBetweenConcepts(from, to, conceptsLink.Value);
+                    var rowChangedIndex = this.concepts.IndexOf(conceptsLink.From);
+                    var columnChangedIndex = this.concepts.IndexOf(conceptsLink.To);
+                    this.fuzzyCognitiveMatrix[rowChangedIndex, columnChangedIndex] = conceptsLink.Value;
                 }
+
+                this.conceptsLinks.AddRange(save.ConceptsLinks);
+
+                this.OnPropertyChanged(nameof(this.ConceptsLinks));
             }
         }
     }

@@ -1,13 +1,10 @@
-﻿using System.IO;
-using Newtonsoft.Json;
-
-namespace Core.Models
+﻿namespace Core.Models
 {
     using System.Collections.Generic;
     using System.Linq;
-    using Modeling;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
+    using Modeling;
 
     public class FuzzyCognitiveModel
     {
@@ -50,15 +47,24 @@ namespace Core.Models
 
         public double Damage { get; private set; }
 
+        public bool CanBeModeled
+        {
+            get
+            {
+                bool canBeModeled = this.FuzzyCognitiveMap.VulnerabilityCriticalities.Any() &&
+                                    this.FuzzyCognitiveMap.ThreatProbabilities.Any() &&
+                                    this.FuzzyCognitiveMap.ResourceValues.Any();
+
+                return this.FuzzyCognitiveMap.Concepts.Any() && canBeModeled;
+            }
+        }
+
         /// <summary>
         /// Запустить статическое моделирование.
         /// </summary>
         public void StartStaticicModeling()
         {
-            if (!this.FuzzyCognitiveMap.Concepts.Any() || 
-                !this.FuzzyCognitiveMap.VulnerabilityCriticalities.Any() ||
-                !this.FuzzyCognitiveMap.ThreatProbabilities.Any() ||
-                !this.FuzzyCognitiveMap.ResourceValues.Any())
+            if (!this.CanBeModeled)
             {
                 return;
             }

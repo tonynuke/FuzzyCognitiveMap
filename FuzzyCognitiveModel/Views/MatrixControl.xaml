@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:FuzzyCognitiveModel.ViewModels"
              mc:Ignorable="d"
-             Loaded="MatrixControl_OnLoaded"
-             Unloaded="MatrixControl_OnUnloaded"
+             Loaded="OnMatrixControlLoaded"
+             Unloaded="OnMatrixControlUnloaded"
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -25,8 +25,8 @@
               CanUserSortColumns="False"
               SelectionMode="Single"
 
-              PreviewKeyDown="Matrix_OnPreviewKeyDown" 
-              CellEditEnding="Matrix_OnCellEditEnding"
-              LoadingRow="Matrix_OnLoadingRow">
+              PreviewKeyDown="OnMatrixPreviewKeyDown" 
+              CellEditEnding="OnMatrixCellEditEnding"
+              LoadingRow="OnMatrixLoadingRow">
     </DataGrid>
 </UserControl>

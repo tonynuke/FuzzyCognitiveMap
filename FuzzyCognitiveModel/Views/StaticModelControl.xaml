@@ -6,7 +6,6 @@
              xmlns:viewModels="clr-namespace:FuzzyCognitiveModel.ViewModels"
              d:DataContext="{d:DesignInstance viewModels:FuzzyCognitiveMapViewModel, IsDesignTimeCreatable=True}"
              mc:Ignorable="d"
-             Loaded="StaticModellerControl_OnLoaded"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
@@ -20,7 +19,7 @@
             </Style.Setters>
         </Style>
     </UserControl.Resources>
-    <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="StaticModel">
         <TabItem Header="Итоги">
             <Grid>
                 <Label Content="Вероятность возникновения неблагоприятного события" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>

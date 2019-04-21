@@ -16,17 +16,8 @@ namespace FuzzyCognitiveModel.Views
         {
             InitializeComponent();
 
-            this.Consonance.LoadingRow += this.Matrix_OnLoadingRow;
-            this.Dissonance.LoadingRow += this.Matrix_OnLoadingRow;
-            this.Influence.LoadingRow += this.Matrix_OnLoadingRow;
-
-            this.ConsonanceInfluence.LoadingRow += this.Matrix_OnLoadingRow;
-            this.DissonanceInfluence.LoadingRow += this.Matrix_OnLoadingRow;
-            this.ConceptInfluence.LoadingRow += this.Matrix_OnLoadingRow;
-
-            this.Consonance.Loaded += this.MatrixOnLoaded;
-            this.Dissonance.Loaded += this.MatrixOnLoaded;
-            this.Influence.Loaded += this.MatrixOnLoaded;
+            this.Loaded += OnStaticModellerControlLoaded;
+            this.Unloaded += OnStaticModellerControlUnloaded;
         }
 
         private void MatrixOnLoaded(object sender, RoutedEventArgs routedEventArgs)
@@ -36,14 +27,34 @@ namespace FuzzyCognitiveModel.Views
 
         private void Matrix_OnLoadingRow(object sender, DataGridRowEventArgs e)
         {
-            e.Row.Header = this.context.Concepts[e.Row.GetIndex()].Name;
+            var rowIndex = e.Row.GetIndex();
+            e.Row.Header = this.context.Concepts[rowIndex].Name;
         }
 
-        private void StaticModellerControl_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnStaticModellerControlLoaded(object sender, RoutedEventArgs e)
         {
-            var model = context;
+            this.Consonance.Loaded += this.MatrixOnLoaded;
+            this.Dissonance.Loaded += this.MatrixOnLoaded;
+            this.Influence.Loaded += this.MatrixOnLoaded;
+
+            var model = this.context;
             if (model != null)
             {
+                this.IsEnabled = model.FuzzyCognitiveModel.CanBeModeled;
+                if (this.IsEnabled == false)
+                {
+                    Dispatcher.BeginInvoke((Action)(() => this.StaticModel.SelectedIndex = 0));
+                    return;
+                }
+
+                this.Consonance.LoadingRow += this.Matrix_OnLoadingRow;
+                this.Dissonance.LoadingRow += this.Matrix_OnLoadingRow;
+                this.Influence.LoadingRow += this.Matrix_OnLoadingRow;
+
+                this.ConsonanceInfluence.LoadingRow += this.Matrix_OnLoadingRow;
+                this.DissonanceInfluence.LoadingRow += this.Matrix_OnLoadingRow;
+                this.ConceptInfluence.LoadingRow += this.Matrix_OnLoadingRow;
+
                 model.FuzzyCognitiveModel.StartStaticicModeling();
 
                 this.Consonance.ItemsSource = model.ToDataView(model.FuzzyCognitiveModel.Consonance);
@@ -58,6 +69,21 @@ namespace FuzzyCognitiveModel.Views
                 this.Probability.Content = model.FuzzyCognitiveModel.Probability;
                 this.Damage.Content = model.FuzzyCognitiveModel.Damage;
             }
+        }
+
+        private void OnStaticModellerControlUnloaded(object sender, RoutedEventArgs e)
+        {
+            this.Consonance.Loaded -= this.MatrixOnLoaded;
+            this.Dissonance.Loaded -= this.MatrixOnLoaded;
+            this.Influence.Loaded -= this.MatrixOnLoaded;
+
+            this.Consonance.LoadingRow -= this.Matrix_OnLoadingRow;
+            this.Dissonance.LoadingRow -= this.Matrix_OnLoadingRow;
+            this.Influence.LoadingRow -= this.Matrix_OnLoadingRow;
+
+            this.ConsonanceInfluence.LoadingRow -= this.Matrix_OnLoadingRow;
+            this.DissonanceInfluence.LoadingRow -= this.Matrix_OnLoadingRow;
+            this.ConceptInfluence.LoadingRow -= this.Matrix_OnLoadingRow;
         }
 
         private void UpdateHeaders(DataGrid dataGrid)

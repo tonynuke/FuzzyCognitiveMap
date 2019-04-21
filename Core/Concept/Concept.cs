@@ -1,31 +1,52 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Concept
+﻿namespace Core.Concept
 {
+    using System;
+
     /// <summary>
     /// Концепт.
     /// </summary>
     /// <remarks> Узел в графе. </remarks>
-    public class Concept
+    public class Concept : IEquatable<Concept>
     {
-        private sealed class NameEqualityComparer : IEqualityComparer<Concept>
+        public bool Equals(Concept other)
         {
-            public bool Equals(Concept x, Concept y)
+            if (ReferenceEquals(null, other))
             {
-                if (ReferenceEquals(x, y)) return true;
-                if (ReferenceEquals(x, null)) return false;
-                if (ReferenceEquals(y, null)) return false;
-                if (x.GetType() != y.GetType()) return false;
-                return string.Equals(x.Name, y.Name);
+                return false;
             }
 
-            public int GetHashCode(Concept obj)
+            if (ReferenceEquals(this, other))
             {
-                return (obj.Name != null ? obj.Name.GetHashCode() : 0);
+                return true;
             }
+
+            return string.Equals(this.Name, other.Name);
         }
 
-        public static IEqualityComparer<Concept> NameComparer { get; } = new NameEqualityComparer();
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return this.Equals((Concept) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (this.Name != null ? this.Name.GetHashCode() : 0);
+        }
 
         /// <summary>
         /// Название.
@@ -46,5 +67,14 @@ namespace Core.Concept
         /// Значение концепта.
         /// </summary>
         public double Value { get; set; }
+
+        /// <summary>
+        /// Конструктор.
+        /// </summary>
+        /// <param name="name">  Название. </param>
+        public Concept(string name)
+        {
+            this.Name = name;
+        }
     }
 }

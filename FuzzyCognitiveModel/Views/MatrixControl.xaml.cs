@@ -21,7 +21,7 @@ namespace FuzzyCognitiveModel.Views
             this.InitializeComponent();
         }
 
-        private void MatrixControl_OnLoaded(object sender, RoutedEventArgs e)
+        private void OnMatrixControlLoaded(object sender, RoutedEventArgs e)
         {
             if (this.context != null)
             {
@@ -30,7 +30,7 @@ namespace FuzzyCognitiveModel.Views
             }
         }
 
-        private void MatrixControl_OnUnloaded(object sender, RoutedEventArgs e)
+        private void OnMatrixControlUnloaded(object sender, RoutedEventArgs e)
         {
             this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.PropertyChanged -= FuzzyCognitiveMapOnPropertyChanged;
         }
@@ -41,7 +41,7 @@ namespace FuzzyCognitiveModel.Views
             this.UpdateHeaders();
         }
 
-        private void Matrix_OnCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void OnMatrixCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             var enteredText = ((TextBox)e.EditingElement).Text;
             if (!this.doubleRegex.IsMatch(enteredText))
@@ -59,7 +59,7 @@ namespace FuzzyCognitiveModel.Views
             this.context.FuzzyCognitiveModel.FuzzyCognitiveMap.SetLinkViaMatrix(row, column, value);
         }
 
-        private void Matrix_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        private void OnMatrixPreviewKeyDown(object sender, KeyEventArgs e)
         {
             // HACK: чтобы не было исключений.
             if (e.Key == Key.Return)
@@ -69,9 +69,10 @@ namespace FuzzyCognitiveModel.Views
             }
         }
 
-        private void Matrix_OnLoadingRow(object sender, DataGridRowEventArgs e)
+        private void OnMatrixLoadingRow(object sender, DataGridRowEventArgs e)
         {
-            e.Row.Header = this.context.Concepts[e.Row.GetIndex()].Name;
+            var rowIndex = e.Row.GetIndex();
+            e.Row.Header = this.context.Concepts[rowIndex].Name;
         }
 
         private void UpdateHeaders()
