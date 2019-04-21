@@ -25,7 +25,7 @@ namespace FuzzyCognitiveModel.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("dot.exe")]
+        [global::System.Configuration.DefaultSettingValueAttribute("lib/graphviz/dot.exe")]
         public string GraphvizDotPath {
             get {
                 return ((string)(this["GraphvizDotPath"]));

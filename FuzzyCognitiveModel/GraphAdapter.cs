@@ -67,6 +67,8 @@ namespace FuzzyCognitiveModel
 
             e.VertexFormatter.StrokeColor = GraphvizColor.Black;
             e.VertexFormatter.Font = new GraphvizFont(System.Drawing.FontFamily.GenericMonospace.Name, 12);
+
+            e.VertexFormatter.Style = GraphvizVertexStyle.Filled;
         }
 
         private static void FormatEdge(object sender, FormatEdgeEventArgs<string, TaggedEdge<string, string>> e)

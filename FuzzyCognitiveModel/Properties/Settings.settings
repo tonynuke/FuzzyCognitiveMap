@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="GraphvizDotPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">dot.exe</Value>
+      <Value Profile="(Default)">lib/graphviz/dot.exe</Value>
     </Setting>
   </Settings>
 </SettingsFile>
