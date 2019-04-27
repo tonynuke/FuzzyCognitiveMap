@@ -40,7 +40,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition SharedSizeGroup="Name" Width="Auto" />
-                        <ColumnDefinition SharedSizeGroup="Description" Width="Auto"/>
+                        <ColumnDefinition SharedSizeGroup="Description" MinWidth="200" Width="Auto"/>
                         <ColumnDefinition SharedSizeGroup="Type" Width="Auto"/>
                         <ColumnDefinition SharedSizeGroup="Value" Width="Auto"/>
                         <ColumnDefinition Width="*"/>

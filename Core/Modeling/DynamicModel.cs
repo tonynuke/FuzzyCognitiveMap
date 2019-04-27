@@ -12,17 +12,26 @@
     public class DynamicModel
     {
         /// <summary>
+        /// Параметр пороговой функции.
+        /// </summary>
+        public int Param { get; set; } = 5;
+
+        /// <summary>
+        /// Количество шагов моделирования.
+        /// </summary>
+        public int Steps { get; set; } = 10;
+
+        /// <summary>
         /// Запустить моделирование.
         /// </summary>
         /// <param name="initialConceptsState"> Начальное состояние концептов. </param>
         /// <param name="conceptLinks"> Матрица связей между концептами. </param>
-        /// <param name="steps"> Количество шагов моделирования. </param>
         /// <returns> Матрица состояний концептов. </returns>
-        public List<Vector<double>> StartModelling(Vector<double> initialConceptsState, Matrix<double> conceptLinks, int steps)
+        public List<Vector<double>> StartModelling(Vector<double> initialConceptsState, Matrix<double> conceptLinks)
         {
             List<Vector<double>> result = new List<Vector<double>> { initialConceptsState };
 
-            for (int step = 0; step < steps; step++)
+            for (int step = 0; step < this.Steps; step++)
             {
                 Vector<double> nextState = this.CalculateNextState(result.Last(), conceptLinks);
                 result.Add(nextState);
@@ -79,7 +88,7 @@
         /// <returns> Результат. </returns>
         protected double LogisticThresholdFunction(double value)
         {
-            return 1 / (1 + Math.Pow(Math.E, -5 * value));
+            return 1 / (1 + Math.Pow(Math.E, -this.Param * value));
         }
     }
 }

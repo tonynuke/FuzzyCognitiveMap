@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using FuzzyCognitiveModel.ViewModels;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -81,7 +83,7 @@ namespace FuzzyCognitiveModel.Views
                 this.SeriesCollection.Add(series);
             }
 
-            var values = this.context.FuzzyCognitiveModel.StartDynamicModeling(Steps);
+            var values = this.context.FuzzyCognitiveModel.StartDynamicModeling();
 
             foreach (var value in values)
             {
@@ -125,6 +127,17 @@ namespace FuzzyCognitiveModel.Views
                 };
                 this.SeriesCollection.Add(series);
             }
+        }
+
+        private static readonly Regex _regex = new Regex("[0-9]+");
+        private static bool IsTextAllowed(string text)
+        {
+            return !_regex.IsMatch(text);
+        }
+
+        private void UIElement_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = IsTextAllowed(e.Text);
         }
     }
 }

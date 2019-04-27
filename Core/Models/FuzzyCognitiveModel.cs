@@ -16,7 +16,7 @@
         /// <summary>
         /// Динамическая модель.
         /// </summary>
-        private DynamicModel dynamicModel = new DynamicModel();
+        public DynamicModel DynamicModel { get; } = new DynamicModel();
 
         /// <summary>
         /// Статическая модель.
@@ -97,12 +97,11 @@
         /// <summary>
         /// Запустить динамическое моделирование.
         /// </summary>
-        /// <param name="steps"> Количество шагов. </param>
         /// <returns> Состояния. </returns>
-        public List<Vector<double>> StartDynamicModeling(int steps)
+        public List<Vector<double>> StartDynamicModeling()
         {
             Vector<double> vector = new DenseVector(this.FuzzyCognitiveMap.Concepts.Select(c => c.Value).ToArray());
-            return this.dynamicModel.StartModelling(vector, this.FuzzyCognitiveMap.FuzzyCognitiveMatrix, steps);
+            return this.DynamicModel.StartModelling(vector, this.FuzzyCognitiveMap.FuzzyCognitiveMatrix);
         }
     }
 }

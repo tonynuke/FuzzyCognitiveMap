@@ -149,7 +149,7 @@ namespace FuzzyCognitiveModel.ViewModels
         /// <param name="obj"> Параметр. </param>
         private void StartModeling(object obj)
         {
-            this.FuzzyCognitiveModel.StartDynamicModeling(10);
+            this.FuzzyCognitiveModel.StartDynamicModeling();
         }
 
         /// <summary>
