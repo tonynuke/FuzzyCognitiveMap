@@ -39,7 +39,7 @@
                      Text="{Binding FuzzyCognitiveModel.DynamicModel.Steps}"
                      PreviewTextInput="UIElement_OnPreviewTextInput"
                      VerticalAlignment="Center"/>
-            <Label Grid.Row="1" Grid.Column="0" Content="Параметер пороговой функции"/>
+            <Label Grid.Row="1" Grid.Column="0" Content="Параметр пороговой функции"/>
             <TextBox Grid.Row="1" Grid.Column="1" 
                      Text="{Binding FuzzyCognitiveModel.DynamicModel.Param}"
                      PreviewTextInput="UIElement_OnPreviewTextInput"
