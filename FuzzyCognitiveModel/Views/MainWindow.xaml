@@ -10,7 +10,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/ResourcesDictionary.xaml" />
+                <ResourceDictionary Source="../Resources/ResourcesDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="GroupBox" x:Key="Influence">
