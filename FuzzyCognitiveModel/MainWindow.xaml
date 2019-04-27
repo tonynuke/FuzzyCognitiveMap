@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:FuzzyCognitiveModel.Views"
         mc:Ignorable="d"
-        Title="Fuzzy cognitive map" Height="472" Width="860">
+        Title="Нечеткие когнитивные карты" Height="472" Width="860">
 
     <Window.Resources>
         <ResourceDictionary>
