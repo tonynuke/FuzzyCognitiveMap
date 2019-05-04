@@ -38,17 +38,17 @@
         /// <summary>
         /// Вероятности возникнвоения угроз.
         /// </summary>
-        public IEnumerable<double> ThreatProbabilities => this.concepts.Where(c => c.Type == ConceptType.Угроза).Select(c => c.Value);
+        public IEnumerable<double> ThreatProbabilities => this.concepts.Where(c => c.Type == ConceptType.Threat).Select(c => c.Value);
 
         /// <summary>
         /// Ценности ресурсов.
         /// </summary>
-        public IEnumerable<double> ResourceValues => this.concepts.Where(c => c.Type == ConceptType.Ресурс).Select(c => c.Value);
+        public IEnumerable<double> ResourceValues => this.concepts.Where(c => c.Type == ConceptType.Resource).Select(c => c.Value);
 
         /// <summary>
         /// Критичность уязвимостей.
         /// </summary>
-        public IEnumerable<double> VulnerabilityCriticalities => this.concepts.Where(c => c.Type == ConceptType.Уязвимость).Select(c => c.Value);
+        public IEnumerable<double> VulnerabilityCriticalities => this.concepts.Where(c => c.Type == ConceptType.Vulnerability).Select(c => c.Value);
 
         /// <summary>
         /// Связи между концептами.
@@ -112,9 +112,10 @@
                 if (existingLink != null)
                 {
                     this.conceptsLinks.Remove(existingLink);
-                    this.UpdateCognitiveMatrix(from, to, value);
-                    return;
                 }
+
+                this.UpdateCognitiveMatrix(from, to, value);
+                return;
             }
 
             var insertingValue = value;
@@ -143,6 +144,7 @@
         /// <summary>
         /// Добавить новый концепт.
         /// </summary>
+        /// <returns> Концепт. </returns>
         public Concept AddConcept()
         {
             var defaultName = $"{DefaultName}{conceptIndex}";

@@ -17,8 +17,10 @@
                 <ResourceDictionary Source="../Resources/ResourcesDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <ObjectDataProvider x:Key="ConceptTypeEnum" MethodName="GetValues"
-        ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider 
+                x:Key="ConceptTypeEnumProvider" 
+                MethodName="GetValues"
+                ObjectType="{x:Type system:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="fuzzyCognitiveMap:ConceptType"/>
                 </ObjectDataProvider.MethodParameters>
@@ -52,8 +54,14 @@
                              Text="{Binding Path=Description}"/>
                     <ComboBox Grid.Column="2"
                           Text="{Binding Path=Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={views:EnumDisplayNameConverter}}" 
-                          ItemsSource="{Binding Source={StaticResource ConceptTypeEnum}}"
-                          SelectedItem="{Binding Type}"/>
+                          ItemsSource="{Binding Source={StaticResource ConceptTypeEnumProvider}}"
+                          SelectedItem="{Binding Type}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <TextBox Grid.Column="3"
                              Text="{Binding Path=Value}"/>
                     <Button Grid.Column="4" 

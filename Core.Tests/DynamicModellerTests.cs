@@ -1,8 +1,8 @@
 namespace Core.Tests
 {
-    using Modeling;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
+    using Modeling;
     using NUnit.Framework;
 
     [TestFixture]
@@ -23,7 +23,7 @@ namespace Core.Tests
             });
 
             var dynamicModeling = new DynamicModel();
-            var m = dynamicModeling.CalculateNextState(vector, matrix);
+            var m = dynamicModeling.StartModelling(vector, matrix);
 
             Assert.IsNotNull(m);
         }

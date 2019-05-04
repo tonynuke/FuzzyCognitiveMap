@@ -46,7 +46,7 @@
         /// <param name="currentConceptsState"> Текущее состояние концептов. </param>
         /// <param name="conceptLinks"> Матрица связей между концептами. </param>
         /// <returns> Следующее состояние концептов. </returns>
-        public Vector<double> CalculateNextState(Vector<double> currentConceptsState, Matrix<double> conceptLinks)
+        private Vector<double> CalculateNextState(Vector<double> currentConceptsState, Matrix<double> conceptLinks)
         {
             var conceptsCount = currentConceptsState.Count;
             var nextState = DenseVector.Build.Dense(conceptsCount);
@@ -76,7 +76,7 @@
         /// </summary>
         /// <param name="value"> Значение. </param>
         /// <returns> Результат. </returns>
-        protected double BivalentThresholdFunction(double value)
+        private double BivalentThresholdFunction(double value)
         {
             return value > 0 ? 1 : 0;
         }
@@ -86,7 +86,7 @@
         /// </summary>
         /// <param name="value"> Значение. </param>
         /// <returns> Результат. </returns>
-        protected double LogisticThresholdFunction(double value)
+        private double LogisticThresholdFunction(double value)
         {
             return 1 / (1 + Math.Pow(Math.E, -this.Param * value));
         }
