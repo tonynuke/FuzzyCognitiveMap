@@ -1,30 +1,15 @@
 namespace Core.Tests
 {
-    using Modeling;
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.LinearAlgebra.Double;
+    using Modeling;
     using NUnit.Framework;
 
     [TestFixture]
     public class StaticModellerTests
     {
         [Test]
-        public void Test1()
-        {
-            Matrix<double> matrix = DenseMatrix.OfArray(new double[,]
-            {
-                { 1, 2 },
-                { 3, 4 }
-            });
-
-            var op = new StaticModel();
-            var m = op.PositiveLinksMatrix(matrix);
-
-            Assert.IsNotNull(m);
-        }
-
-        [Test]
-        public void Smoke_test()
+        public void Static_model_does_not_fail_smoke_test()
         {
             Matrix<double> matrix = DenseMatrix.OfArray(new double[,]
             {
@@ -33,8 +18,6 @@ namespace Core.Tests
             });
 
             var op = new StaticModel();
-
-            //var ts = op.TransitiveClousure(matrix);
 
             // шаг 1
             var R = op.PositiveLinksMatrix(matrix);

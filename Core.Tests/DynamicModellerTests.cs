@@ -9,7 +9,7 @@ namespace Core.Tests
     public class DynamicModellerTests
     {
         [Test]
-        public void Test1()
+        public void Dynamic_model_does_not_fail_smoke_test()
         {
             Vector<double> vector = DenseVector.Build.DenseOfArray(new double[]
             {
